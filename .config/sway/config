@@ -216,7 +216,7 @@ gaps outer 20
 
 font Hack 12
 
-smart_gaps on
+#smart_gaps on
 
 default_border pixel 1
 

@@ -9,7 +9,7 @@ Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'norcalli/nvim-colorizer.lua'
-Plug 'akinsho/bufferline.nvim'
+Plug 'pantharshit00/vim-prisma'
 
 call plug#end()
 
@@ -18,7 +18,6 @@ runtime tree.vim
 runtime org.vim
 
 lua require'colorizer'.setup()
-lua require'bufferline'.setup()
 
 let g:gruvbox_italic=1
 colorscheme gruvbox
