@@ -10,6 +10,7 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'norcalli/nvim-colorizer.lua'
 Plug 'pantharshit00/vim-prisma'
+Plug 'akinsho/toggleterm.nvim'
 
 call plug#end()
 
