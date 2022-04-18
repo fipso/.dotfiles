@@ -14,16 +14,16 @@
 font pango:Hack 16
 
 #exec --no-startup-id easyeffects --gapplication-service
-exec --no-startup-id feh --bg-scale ~/Pictures/space.jpeg
-exec --no-startup-id dex --autostart --environment i3
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
-exec --no-startup-id nm-applet
-#exec --no-startup-id xrandr --output DP-4 -r 144
+exec --no-startup-id "feh --bg-scale ~/Pictures/space.jpeg"
+exec --no-startup-id "dex --autostart --environment i3"
+exec --no-startup-id "xss-lock --transfer-sleep-lock -- i3lock --nofork"
+#exec --no-startup-id nm-applet
+#exec --no-startup-id "xrandr --output DP-4 --dpi 130"
 #exec --no-startup-id xrandr --output HDMI-0 -r 144
 #exec --no-startup-id xrandr --output DP-3 --mode "1920x1080" --rate 60 --right-of DP-4 
-exec --no-startup-id picom --experimental-backend
+exec --no-startup-id "picom --experimental-backend"
 exec --no-startup-id dunst
-exec --no-startup-id setxkbmap eurkey
+exec --no-startup-id bash -c "sleep 10; setxkbmap eurkey"
 #exec --no-startup-id slack
 
 # Use pactl to adjust volume in PulseAudio.
@@ -90,14 +90,17 @@ bindsym Mod4+Shift+i move container to workspace i
 bindsym Mod4+Shift+o move container to workspace o
 bindsym Mod4+Shift+p move container to workspace p
 
+bindsym Mod4+b workspace back_and_forth
+bindsym Mod4+Control+l move workspace to output right
+bindsym Mod4+Control+h move workspace to output left
 #
 # Layout stuff:
 #
 # You can "split" the current object of your focus with
 # Mod4+b or Mod4+v, for horizontal and vertical splits
 # respectively.
-bindsym Mod4+b splith
-bindsym Mod4+v splitv
+#bindsym Mod4+b splith
+#bindsym Mod4+v splitv
 
 # Switch the current container between different layout styles
 #bindsym Mod4+s layout stacking
@@ -158,7 +161,7 @@ gaps outer 20
 
 default_border pixel 1
 
-set $bg 	#d65d0e
+set $bg            #80D4FF
 set $bg-inactive   #323232
 set $bg-urgent     #000000
 set $text          #eeeeec
