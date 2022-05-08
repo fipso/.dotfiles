@@ -21,4 +21,8 @@ if status is-interactive
     alias config="/usr/bin/git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME"
     set -gx EDITOR nvim
     set -g fish_handle_reflow 0
+    set -gx PATH "$HOME/.cargo/bin" $PATH;
 end
+
+# Created by `userpath` on 2022-04-29 20:37:44
+set PATH $PATH /home/fipso/.local/bin

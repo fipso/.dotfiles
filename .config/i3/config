@@ -14,6 +14,7 @@
 font pango:Hack 16
 
 #exec --no-startup-id easyeffects --gapplication-service
+exec --no-startup-id autotiling
 exec --no-startup-id "feh --bg-scale ~/Pictures/space.jpeg"
 exec --no-startup-id "dex --autostart --environment i3"
 exec --no-startup-id "xss-lock --transfer-sleep-lock -- i3lock --nofork"
@@ -21,7 +22,7 @@ exec --no-startup-id "xss-lock --transfer-sleep-lock -- i3lock --nofork"
 #exec --no-startup-id "xrandr --output DP-4 --dpi 130"
 #exec --no-startup-id xrandr --output HDMI-0 -r 144
 #exec --no-startup-id xrandr --output DP-3 --mode "1920x1080" --rate 60 --right-of DP-4 
-exec --no-startup-id "picom --experimental-backend"
+exec --no-startup-id picom
 exec --no-startup-id dunst
 exec --no-startup-id bash -c "sleep 10; setxkbmap eurkey"
 #exec --no-startup-id slack
@@ -47,7 +48,9 @@ bindsym Mod4+q kill
 # Start your launcher
 bindsym Mod4+e exec bash ~/.config/i3/rofi.sh
 
-#bindsym Mod4+c exec bash -c 'grim -g "$(slurp)" - | wl-copy'
+bindsym Mod4+c exec bash -c 'maim -s | xclip -selection clipboard -t image/png'
+bindsym Mod4+Shift+c exec ~/.config/i3/record.sh
+bindsym Mod4+Control+c exec ~/.config/i3/ocr.sh
 
 bindsym Mod4+Shift+x exec rofi -show p -modi p:~/.config/i3/rofi-power-menu -theme glue_pro_blue -font "Hack 16" -width 10 -lines 6
 
@@ -75,7 +78,7 @@ bindsym Mod4+a workspace a
 bindsym Mod4+s workspace s
 bindsym Mod4+d workspace d
 bindsym Mod4+f workspace f
-bindsym Mod4+u workspace u 
+bindsym Mod4+u workspace u
 bindsym Mod4+i workspace i
 bindsym Mod4+o workspace o
 bindsym Mod4+p workspace p
@@ -117,7 +120,7 @@ bindsym Mod4+Shift+e floating toggle
 bindsym Mod4+space focus mode_toggle
 
 # reload the configuration file
-bindsym Mod4+Shift+c reload
+#bindsym Mod4+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym Mod4+Shift+r restart
 # exit i3 (logs you out of your X session)
@@ -131,16 +134,16 @@ mode "resize" {
         # Pressing right will grow the window’s width.
         # Pressing up will shrink the window’s height.
         # Pressing down will grow the window’s height.
-        bindsym $left       resize shrink width 10 px or 10 ppt
-        bindsym $down       resize grow height 10 px or 10 ppt
-        bindsym $up         resize shrink height 10 px or 10 ppt
-        bindsym $right      resize grow width 10 px or 10 ppt
+        bindsym $left       resize shrink width 2 px or 2 ppt
+        bindsym $down       resize grow height 2 px or 2 ppt
+        bindsym $up         resize shrink height 2 px or 2 ppt
+        bindsym $right      resize grow width 2 px or 2 ppt
 
         # same bindings, but for the arrow keys
-        bindsym Left        resize shrink width 10 px or 10 ppt
-        bindsym Down        resize grow height 10 px or 10 ppt
-        bindsym Up          resize shrink height 10 px or 10 ppt
-        bindsym Right       resize grow width 10 px or 10 ppt
+        bindsym Left        resize shrink width 2 px or 2 ppt
+        bindsym Down        resize grow height 2 px or 2 ppt
+        bindsym Up          resize shrink height 2 px or 2 ppt
+        bindsym Right       resize grow width 2 px or 2 ppt
 
         # back to normal: Enter or Escape or Mod4+r
         bindsym Return mode "default"
@@ -153,25 +156,11 @@ bindsym Mod4+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
+        position top
         status_command i3status
 }
 
 gaps inner 10
 gaps outer 20
 
-default_border pixel 1
-
-set $bg            #80D4FF
-set $bg-inactive   #323232
-set $bg-urgent     #000000
-set $text          #eeeeec
-set $text-inactive #babdb6
-
-set $bar           #323232
-set $statusline    #e0e0e0
-
-client.focused          $bg           $bg          $text          $bg $bg
-client.unfocused        $bg-inactive  $bg-inactive $text-inactive $bar $bar
-client.focused_inactive $bg-inactive  $bg-inactive $text-inactive $bar $bar
-client.urgent           $bg-urgent    $bg-urgent   $text          $bar $bar
-
+for_window [class=".*"] border pixel 2
