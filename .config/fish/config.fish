@@ -19,10 +19,14 @@ if status is-interactive
     alias ts="tmux ls"
     alias ta="tmux a"
     alias config="/usr/bin/git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME"
+    alias wttr="curl wttr.in/Potsdam"
     set -gx EDITOR nvim
     set -g fish_handle_reflow 0
     set -gx PATH "$HOME/.cargo/bin" $PATH;
+
+    fish_vi_key_bindings
 end
 
 # Created by `userpath` on 2022-04-29 20:37:44
 set PATH $PATH /home/fipso/.local/bin
+fish_add_path /home/fipso/.spicetify
