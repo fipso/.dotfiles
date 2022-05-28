@@ -20,6 +20,8 @@ if status is-interactive
     alias ta="tmux a"
     alias config="/usr/bin/git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME"
     alias wttr="curl wttr.in/Potsdam"
+    alias b="bat"
+    alias c="cd"
     set -gx EDITOR nvim
     set -g fish_handle_reflow 0
     set -gx PATH "$HOME/.cargo/bin" $PATH;

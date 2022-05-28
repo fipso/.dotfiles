@@ -12,14 +12,13 @@ Plug 'pantharshit00/vim-prisma'
 Plug 'tpope/vim-fugitive'
 Plug 'sindrets/diffview.nvim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
 Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'folke/todo-comments.nvim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
+Plug 'vimpostor/vim-tpipeline'
 
 call plug#end()
 
@@ -37,7 +36,6 @@ lua require'todo-comments'.setup()
 "let g:gruvbox_italic=1
 "colorscheme gruvbox
 
-
 set rnu
 set mouse=a
 set splitbelow
@@ -45,6 +43,7 @@ set splitright
 set clipboard+=unnamedplus
 set hidden
 set cmdheight=1
+:set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
 
 nnoremap <SPACE> <Nop>
 map <Space> <Leader>
@@ -57,14 +56,6 @@ nnoremap <leader>b <cmd>Telescope buffers<cr>
 nnoremap <leader>n <cmd>Telescope frecency<cr>
 nnoremap <leader>t <cmd>TodoTelescope<cr>
 nnoremap <leader>b <cmd>Telescope git_branches<cr>
-
-" Harpoon for quick file navigation
-nnoremap <leader>m <cmd>lua require("harpoon.mark").add_file()<cr>
-nnoremap <leader>h <cmd>lua require("harpoon.ui").toggle_quick_menu()<cr>
-nnoremap <leader>u <cmd>lua require("harpoon.ui").nav_file(1)<cr>
-nnoremap <leader>i <cmd>lua require("harpoon.ui").nav_file(2)<cr>
-nnoremap <leader>o <cmd>lua require("harpoon.ui").nav_file(3)<cr>
-nnoremap <leader>p <cmd>lua require("harpoon.ui").nav_file(4)<cr>
 
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>

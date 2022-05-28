@@ -14,7 +14,6 @@
 font pango:Hack 16
 
 #exec --no-startup-id easyeffects --gapplication-service
-exec --no-startup-id autotiling
 exec --no-startup-id "feh --bg-scale ~/Pictures/village.jpg"
 exec --no-startup-id "dex --autostart --environment i3"
 exec --no-startup-id "xss-lock --transfer-sleep-lock -- i3lock --nofork"
@@ -27,6 +26,7 @@ exec --no-startup-id dunst
 exec --no-startup-id bash -c "sleep 10; setxkbmap eurkey"
 exec --no-startup-id polybar main
 exec --no-startup-id polybar secondary
+exec --no-startup-id redshift -l 52.5132364:13.3776222
 #exec --no-startup-id slack
 
 # Use pactl to adjust volume in PulseAudio.
