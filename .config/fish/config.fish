@@ -22,9 +22,15 @@ if status is-interactive
     alias wttr="curl wttr.in/Potsdam"
     alias b="bat"
     alias c="cd"
+    alias icat="kitty +kitten icat"
+    alias ssh="kitty +kitten ssh"
     set -gx EDITOR nvim
-    set -g fish_handle_reflow 0
+    set -gx TERMINAL /usr/bin/kitty
     set -gx PATH "$HOME/.cargo/bin" $PATH;
+    set -gx NNN_PLUG "p:preview-tui"
+    set -gx NNN_FIFO "/tmp/nnn.fifo"
+
+    set -g fish_handle_reflow 0
 
     fish_vi_key_bindings
 end

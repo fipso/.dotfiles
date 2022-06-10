@@ -37,13 +37,14 @@ lua require'todo-comments'.setup()
 "colorscheme gruvbox
 
 set rnu
+set number
 set mouse=a
 set splitbelow
 set splitright
 set clipboard+=unnamedplus
 set hidden
 set cmdheight=1
-:set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
+set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
 
 nnoremap <SPACE> <Nop>
 map <Space> <Leader>
@@ -57,9 +58,25 @@ nnoremap <leader>n <cmd>Telescope frecency<cr>
 nnoremap <leader>t <cmd>TodoTelescope<cr>
 nnoremap <leader>b <cmd>Telescope git_branches<cr>
 
+function! NumberToggle()
+  if(&rnu == 1)
+    set nornu
+  else
+    set rnu
+  endif
+endfunc
+
+nnoremap <leader>l :call NumberToggle()<cr>
+
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 command! -nargs=0 P :CocCommand prettier.forceFormatDocument
+
+" Return to last edit position when opening files (You want this!)
+autocmd BufReadPost *
+      \ if line("'\"") > 0 && line("'\"") <= line("$") |
+      \   exe "normal! g`\"" |
+      \ endif
