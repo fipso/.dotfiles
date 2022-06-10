@@ -5,7 +5,6 @@ configuration {
   drun-display-format: "{name}";
   font: "Hack 16";
   modi: "window,run,drun,ssh";
-  show-icons: true;
 }
 
 @theme "/dev/null"

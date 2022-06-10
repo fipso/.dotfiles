@@ -17,6 +17,8 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- Enable hotkeys help widget for VIM and other apps
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
+-- Custom libs
+local bling = require("bling")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -80,6 +82,20 @@ awful.layout.layouts = {
     -- awful.layout.suit.corner.se,
 }
 -- }}}
+
+-- Scratchpad
+
+local term_scratch = bling.module.scratchpad {
+    command = "kitty --class scratch",                -- How to spawn the scratchpad
+    rule = { instance = "scratch" },                  -- The rule that the scratchpad will be searched by
+    sticky = true,                                    -- Whether the scratchpad should be sticky
+    autoclose = true,                                 -- Whether it should hide itself when losing focus
+    floating = true,                                  -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
+    geometry = {x=200, y=300, height=900, width=1200}, -- The geometry in a floating state
+    reapply = true,                                   -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
+    --dont_focus_before_close  = false,                 -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
+    --rubato = {x = anim_x, y = anim_y}                 -- Optional. This is how you can pass in the rubato tables for animations. If you don't want animations, you can ignore this option.
+}
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
@@ -150,24 +166,24 @@ local tasklist_buttons = gears.table.join(
         awful.client.focus.byidx(-1)
     end))
 
-    local function set_wallpaper(s)
-        -- Wallpaper
-        if beautiful.wallpaper then
-            local wallpaper = beautiful.wallpaper
-            -- If wallpaper is a function, call it with the screen
-            if type(wallpaper) == "function" then
-                wallpaper = wallpaper(s)
-            end
-            gears.wallpaper.maximized(wallpaper, s, true)
-        end
-    end
+    -- local function set_wallpaper(s)
+    --     -- Wallpaper
+    --     if beautiful.wallpaper then
+    --         local wallpaper = beautiful.wallpaper
+    --         -- If wallpaper is a function, call it with the screen
+    --         if type(wallpaper) == "function" then
+    --             wallpaper = wallpaper(s)
+    --         end
+    --         gears.wallpaper.maximized(wallpaper, s, true)
+    --     end
+    -- end
 
     -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
-    screen.connect_signal("property::geometry", set_wallpaper)
+    --screen.connect_signal("property::geometry", set_wallpaper)
 
     awful.screen.connect_for_each_screen(function(s)
         -- Wallpaper
-        set_wallpaper(s)
+        --set_wallpaper(s)
 
         -- Each screen has its own tag table.
         awful.tag({ "1", "2", "3", "4", "5", "6", "7", "8", "9" }, s, awful.layout.layouts[1])
@@ -230,7 +246,7 @@ local tasklist_buttons = gears.table.join(
 
         -- {{{ Key bindings
         globalkeys = gears.table.join(
-            awful.key({ modkey,           }, "s",      hotkeys_popup.show_help,
+            awful.key({ modkey,           }, "y",      hotkeys_popup.show_help,
                 {description="show help", group="awesome"}),
             awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
                 {description = "view previous", group = "tag"}),
@@ -277,7 +293,7 @@ local tasklist_buttons = gears.table.join(
             -- Standard program
             awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
                 {description = "open a terminal", group = "launcher"}),
-            awful.key({ modkey,           }, "e", function () awful.spawn.with_shell("rofi -combi-modi window,drun,ssh -show combi") end,
+            awful.key({ modkey,           }, "e", function () awful.spawn("rofi -combi-modi window,drun,ssh -show combi -show-icons") end,
                 {description = "launch rofi", group = "launcher"}),
             awful.key({ modkey, "Control" }, "r", awesome.restart,
                 {description = "reload awesome", group = "awesome"}),
@@ -285,16 +301,19 @@ local tasklist_buttons = gears.table.join(
                 {description = "quit awesome", group = "awesome"}),
             awful.key({ modkey,           }, "c", function () awful.spawn("bash -c 'maim -s | xclip -selection clipboard -t image/png'") end,
                 {description = "take screenshot", group="launcher"}),
-            awful.key({ modkey, "Shift"   }, "c", function () awful.spawn.with_shell("bash ~/.config/scripts/record.sh") end,
+            awful.key({ modkey, "Shift"   }, "c", function () awful.spawn("bash ~/.config/scripts/record.sh") end,
                 {description = "start screen recording", group="launcher"}),
-            awful.key({ modkey    }, "x", function () awful.spawn.with_shell("rofi -show p -modi p:~/.config/scripts/rofi-power-menu.sh") end,
+            awful.key({ modkey    }, "x", function () awful.spawn("rofi -show p -modi p:~/.config/scripts/rofi-power-menu.sh") end,
                 {description = "launch rofi power menu", group="launcher"}),
             awful.key({ modkey    }, "a", function () awful.spawn.with_shell("bash ~/.config/scripts/audio.sh") end,
                 {description = "launch rofi audio menu", group="launcher"}),
-            awful.key({ modkey    }, "m", function () awful.spawn.with_shell("rofi -show calc") end,
+            awful.key({ modkey    }, "m", function () awful.spawn("rofi -show calc") end,
                 {description = "launch rofi calc menu", group="launcher"}),
-            awful.key({ modkey    }, ".", function () awful.spawn.with_shell("rofi -show emoji") end,
+            awful.key({ modkey    }, ".", function () awful.spawn("rofi -show emoji") end,
                 {description = "launch rofi emoji menu", group="launcher"}),
+            -- Scratchpad
+            awful.key({modkey }, "s", function () term_scratch:toggle() end,
+                {description = "toggle scratchpad", group="launcher"}),
 
             awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
                 {description = "increase master width factor", group = "layout"}),
@@ -374,13 +393,12 @@ local tasklist_buttons = gears.table.join(
             {description = "(un)maximize horizontally", group = "client"}),
 
             -- Media Keys
-            awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn.with_shell("pactl set-sink-volume @DEFAULT_SINK@ +5%", false) end),
-            awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn.with_shell("pactl set-sink-volume @DEFAULT_SINK@ -5%", false) end),
-            awful.key({ }, "XF86AudioPlay", function () awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
-            awful.key({ }, "XF86AudioStop", function () awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop", false) end),
-            awful.key({ }, "XF86AudioPrev", function () awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
-            awful.key({ }, "XF86AudioNext", function () awful.spawn.with_shell("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end)
-
+            awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%", false) end),
+            awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%", false) end),
+            awful.key({ }, "XF86AudioPlay", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
+            awful.key({ }, "XF86AudioStop", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop", false) end),
+            awful.key({ }, "XF86AudioPrev", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
+            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end)
             )
 
         -- Bind all key numbers to tags.
@@ -573,9 +591,9 @@ local tasklist_buttons = gears.table.join(
         client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
         -- }}}
 
-        awful.spawn.with_shell("picom")
+        awful.spawn("picom")
         --awful.spawn.with_shell("polybar main")
         --awful.spawn.with_shell("polybar secondary")
-        awful.spawn.with_shell("bash ~/.config/scripts/redshift.sh")
+        awful.spawn("bash ~/.config/scripts/redshift.sh")
         awful.spawn.with_shell("nitrogen --restore")
         --awful.spawn.with_shell("feh --bg-scale ~/Pictures/EldenRing.jpg")
