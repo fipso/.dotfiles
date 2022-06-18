@@ -19,6 +19,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'vimpostor/vim-tpipeline'
+Plug 'sonph/onehalf', { 'rtp': 'vim' }
 
 call plug#end()
 
@@ -26,9 +27,9 @@ runtime coc.vim
 runtime tree.vim
 
 set termguicolors 
-let ayucolor="mirage"
-colorscheme ayu
 hi Normal guibg=None ctermbg=NONE
+
+runtime theme.vim
 
 lua require'colorizer'.setup()
 lua require'todo-comments'.setup()
@@ -45,6 +46,7 @@ set clipboard+=unnamedplus
 set hidden
 set cmdheight=1
 set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
+set so=3
 
 nnoremap <SPACE> <Nop>
 map <Space> <Leader>

@@ -301,7 +301,7 @@ local tasklist_buttons = gears.table.join(
                 {description = "quit awesome", group = "awesome"}),
             awful.key({ modkey,           }, "c", function () awful.spawn("bash -c 'maim -s | xclip -selection clipboard -t image/png'") end,
                 {description = "take screenshot", group="launcher"}),
-            awful.key({ modkey, "Shift"   }, "c", function () awful.spawn("bash ~/.config/scripts/record.sh") end,
+            awful.key({ modkey, "Shift"   }, "c", function () awful.spawn.with_shell("bash ~/.config/scripts/record.sh") end,
                 {description = "start screen recording", group="launcher"}),
             awful.key({ modkey    }, "x", function () awful.spawn("rofi -show p -modi p:~/.config/scripts/rofi-power-menu.sh") end,
                 {description = "launch rofi power menu", group="launcher"}),
@@ -309,7 +309,7 @@ local tasklist_buttons = gears.table.join(
                 {description = "launch rofi audio menu", group="launcher"}),
             awful.key({ modkey    }, "m", function () awful.spawn("rofi -show calc") end,
                 {description = "launch rofi calc menu", group="launcher"}),
-            awful.key({ modkey    }, ".", function () awful.spawn("rofi -show emoji") end,
+            awful.key({ modkey    }, ".", function () awful.spawn("rofi -show emoji -modi emoji") end,
                 {description = "launch rofi emoji menu", group="launcher"}),
             -- Scratchpad
             awful.key({modkey }, "s", function () term_scratch:toggle() end,
