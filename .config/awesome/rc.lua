@@ -18,7 +18,7 @@ local hotkeys_popup = require("awful.hotkeys_popup")
 -- when client with a matching name is opened:
 require("awful.hotkeys_popup.keys")
 -- Custom libs
-local bling = require("bling")
+local lain = require("lain")
 
 -- {{{ Error handling
 -- Check if awesome encountered an error during startup and fell back to
@@ -70,6 +70,8 @@ awful.layout.layouts = {
     --awful.layout.suit.tile.bottom,
     --awful.layout.suit.tile.top,
     awful.layout.suit.fair,
+    lain.layout.termfair.center,
+    lain.layout.centerwork
     --awful.layout.suit.fair.horizontal,
     --awful.layout.suit.spiral,
     --awful.layout.suit.spiral.dwindle,
@@ -85,17 +87,17 @@ awful.layout.layouts = {
 
 -- Scratchpad
 
-local term_scratch = bling.module.scratchpad {
-    command = "kitty --class scratch",                -- How to spawn the scratchpad
-    rule = { instance = "scratch" },                  -- The rule that the scratchpad will be searched by
-    sticky = true,                                    -- Whether the scratchpad should be sticky
-    autoclose = true,                                 -- Whether it should hide itself when losing focus
-    floating = true,                                  -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
-    geometry = {x=200, y=300, height=900, width=1200}, -- The geometry in a floating state
-    reapply = true,                                   -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
-    --dont_focus_before_close  = false,                 -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
-    --rubato = {x = anim_x, y = anim_y}                 -- Optional. This is how you can pass in the rubato tables for animations. If you don't want animations, you can ignore this option.
-}
+-- local term_scratch = bling.module.scratchpad {
+--     command = "kitty --class scratch",                -- How to spawn the scratchpad
+--     rule = { instance = "scratch" },                  -- The rule that the scratchpad will be searched by
+--     sticky = true,                                    -- Whether the scratchpad should be sticky
+--     autoclose = false,                                 -- Whether it should hide itself when losing focus
+--     floating = true,                                  -- Whether it should be floating (MUST BE TRUE FOR ANIMATIONS)
+--     geometry = {x=200, y=300, height=900, width=1200}, -- The geometry in a floating state
+--     reapply = true,                                   -- Whether all those properties should be reapplied on every new opening of the scratchpad (MUST BE TRUE FOR ANIMATIONS)
+--     --dont_focus_before_close  = false,                 -- When set to true, the scratchpad will be closed by the toggle function regardless of whether its focused or not. When set to false, the toggle function will first bring the scratchpad into focus and only close it on a second call
+--     --rubato = {x = anim_x, y = anim_y}                 -- Optional. This is how you can pass in the rubato tables for animations. If you don't want animations, you can ignore this option.
+-- }
 
 -- {{{ Menu
 -- Create a launcher widget and a main menu
@@ -255,30 +257,53 @@ local tasklist_buttons = gears.table.join(
             awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
                 {description = "go back", group = "tag"}),
 
-            awful.key({ modkey,           }, "j",
-                function ()
-                    awful.client.focus.byidx( 1)
-                end,
-                {description = "focus next by index", group = "client"}
-                ),
-            awful.key({ modkey,           }, "k",
-                function ()
-                    awful.client.focus.byidx(-1)
-                end,
-                {description = "focus previous by index", group = "client"}
-                ),
+            -- awful.key({ modkey,           }, "j",
+            --     function ()
+            --         awful.client.focus.byidx( 1)
+            --     end,
+            --     {description = "focus next by index", group = "client"}
+            --     ),
+            -- awful.key({ modkey,           }, "k",
+            --     function ()
+            --         awful.client.focus.byidx(-1)
+            --     end,
+            --     {description = "focus previous by index", group = "client"}
+            --     ),
             --    awful.key({ modkey,           }, "w", function () mymainmenu:show() end,
             --              {description = "show main menu", group = "awesome"}),
+            
+            awful.key({ modkey }, "j",
+                function()
+                    awful.client.focus.bydirection("down")
+                    if client.focus then client.focus:raise() end
+                end),
+            awful.key({ modkey }, "k",
+                function()
+                    awful.client.focus.bydirection("up")
+                    if client.focus then client.focus:raise() end
+                end),
+            awful.key({ modkey }, "h",
+                function()
+                    awful.client.focus.bydirection("left")
+                    if client.focus then client.focus:raise() end
+                end),
+            awful.key({ modkey }, "l",
+                function()
+                    awful.client.focus.bydirection("right")
+                    if client.focus then client.focus:raise() end
+                end),
 
             -- Layout manipulation
-            awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end,
+            awful.key({ modkey, "Control"   }, "j", function () awful.client.swap.byidx(  1)    end,
                 {description = "swap with next client by index", group = "client"}),
-            awful.key({ modkey, "Shift"   }, "k", function () awful.client.swap.byidx( -1)    end,
+            awful.key({ modkey, "Control"   }, "k", function () awful.client.swap.byidx( -1)    end,
                 {description = "swap with previous client by index", group = "client"}),
-            awful.key({ modkey, "Control" }, "j", function () awful.screen.focus_relative( 1) end,
+
+            awful.key({ modkey, "Control" }, "h", function () awful.screen.focus_bydirection("left") end,
                 {description = "focus the next screen", group = "screen"}),
-            awful.key({ modkey, "Control" }, "k", function () awful.screen.focus_relative(-1) end,
+            awful.key({ modkey, "Control" }, "l", function () awful.screen.focus_bydirection("right") end,
                 {description = "focus the previous screen", group = "screen"}),
+
             awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
                 {description = "jump to urgent client", group = "client"}),
             awful.key({ modkey,           }, "Tab",
@@ -312,21 +337,24 @@ local tasklist_buttons = gears.table.join(
             awful.key({ modkey    }, ".", function () awful.spawn("rofi -show emoji -modi emoji") end,
                 {description = "launch rofi emoji menu", group="launcher"}),
             -- Scratchpad
-            awful.key({modkey }, "s", function () term_scratch:toggle() end,
-                {description = "toggle scratchpad", group="launcher"}),
+            --awful.key({modkey }, "s", function () term_scratch:toggle() end,
+            --    {description = "toggle scratchpad", group="launcher"}),
 
-            awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)          end,
+            awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incmwfact( 0.05)          end,
                 {description = "increase master width factor", group = "layout"}),
-            awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)          end,
+            awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incmwfact(-0.05)          end,
                 {description = "decrease master width factor", group = "layout"}),
-            awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1, nil, true) end,
+
+            awful.key({ modkey, "Shift"   }, ".",     function () awful.tag.incnmaster( 1, nil, true) end,
                 {description = "increase the number of master clients", group = "layout"}),
-            awful.key({ modkey, "Shift"   }, "l",     function () awful.tag.incnmaster(-1, nil, true) end,
+            awful.key({ modkey, "Shift"   }, ",",     function () awful.tag.incnmaster(-1, nil, true) end,
                 {description = "decrease the number of master clients", group = "layout"}),
-            awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
-                {description = "increase the number of columns", group = "layout"}),
-            awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
-                {description = "decrease the number of columns", group = "layout"}),
+
+            -- awful.key({ modkey, "Control" }, "h",     function () awful.tag.incncol( 1, nil, true)    end,
+            --     {description = "increase the number of columns", group = "layout"}),
+            -- awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
+            --     {description = "decrease the number of columns", group = "layout"}),
+            --
             awful.key({ modkey,           }, "w", function () awful.layout.inc( 1)                end,
                 {description = "select next", group = "layout"}),
             awful.key({ modkey, "Shift"   }, "w", function () awful.layout.inc(-1)                end,
@@ -373,12 +401,13 @@ local tasklist_buttons = gears.table.join(
             c.minimized = true
             end ,
             {description = "minimize", group = "client"}),
-            awful.key({ modkey,           }, "m",
-            function (c)
-            c.maximized = not c.maximized
-            c:raise()
-            end ,
-            {description = "(un)maximize", group = "client"}),
+
+            -- awful.key({ modkey,           }, "m",
+            -- function (c)
+            -- c.maximized = not c.maximized
+            -- c:raise()
+            -- end ,
+            -- {description = "(un)maximize", group = "client"}),
             awful.key({ modkey, "Control" }, "m",
             function (c)
             c.maximized_vertical = not c.maximized_vertical
@@ -594,6 +623,6 @@ local tasklist_buttons = gears.table.join(
         awful.spawn("picom")
         --awful.spawn.with_shell("polybar main")
         --awful.spawn.with_shell("polybar secondary")
-        awful.spawn("bash ~/.config/scripts/redshift.sh")
+        awful.spawn.with_shell("bash ~/.config/scripts/redshift.sh")
         awful.spawn.with_shell("nitrogen --restore")
         --awful.spawn.with_shell("feh --bg-scale ~/Pictures/EldenRing.jpg")

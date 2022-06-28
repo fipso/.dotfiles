@@ -12,7 +12,7 @@ Plug 'pantharshit00/vim-prisma'
 Plug 'tpope/vim-fugitive'
 Plug 'sindrets/diffview.nvim'
 Plug 'ayu-theme/ayu-vim'
-Plug 'lukas-reineke/indent-blankline.nvim'
+"Plug 'lukas-reineke/indent-blankline.nvim'
 Plug 'folke/todo-comments.nvim'
 Plug 'junegunn/vim-peekaboo'
 Plug 'tpope/vim-surround'
@@ -55,7 +55,7 @@ tnoremap <Esc> <C-\><C-n>
 " Find files using Telescope command-line sugar.
 nnoremap <leader>f <cmd>Telescope find_files<cr>
 nnoremap <leader>g <cmd>Telescope live_grep<cr>
-nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>u <cmd>Telescope buffers<cr>
 nnoremap <leader>n <cmd>Telescope frecency<cr>
 nnoremap <leader>t <cmd>TodoTelescope<cr>
 nnoremap <leader>b <cmd>Telescope git_branches<cr>

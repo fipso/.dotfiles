@@ -1,1 +1,2 @@
-colorscheme onehalflight
+let ayucolor="mirage"
+colorscheme ayu
