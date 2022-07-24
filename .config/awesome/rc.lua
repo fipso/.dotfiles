@@ -52,7 +52,7 @@ beautiful.font = "monospace 14"
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
-editor = os.getenv("EDITOR") or "nano"
+editor = os.getenv("EDITOR") or "vim"
 editor_cmd = terminal .. " -e " .. editor
 
 -- Default modkey.
@@ -65,16 +65,16 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 awful.layout.layouts = {
     awful.layout.suit.tile,
+    awful.layout.suit.tile.left,
     awful.layout.suit.floating,
-    --awful.layout.suit.tile.left,
     --awful.layout.suit.tile.bottom,
     --awful.layout.suit.tile.top,
-    awful.layout.suit.fair,
-    lain.layout.termfair.center,
-    lain.layout.centerwork
+    --awful.layout.suit.fair,
+    --lain.layout.termfair.center,
+    lain.layout.centerwork,
     --awful.layout.suit.fair.horizontal,
-    --awful.layout.suit.spiral,
-    --awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.spiral,
+    awful.layout.suit.spiral.dwindle,
     --awful.layout.suit.max,
     --awful.layout.suit.max.fullscreen,
     --awful.layout.suit.magnifier,
@@ -250,9 +250,9 @@ local tasklist_buttons = gears.table.join(
         globalkeys = gears.table.join(
             awful.key({ modkey,           }, "y",      hotkeys_popup.show_help,
                 {description="show help", group="awesome"}),
-            awful.key({ modkey,           }, "Left",   awful.tag.viewprev,
+            awful.key({ modkey, "Control"  }, "h",   awful.tag.viewprev,
                 {description = "view previous", group = "tag"}),
-            awful.key({ modkey,           }, "Right",  awful.tag.viewnext,
+            awful.key({ modkey, "Control"  }, "l",  awful.tag.viewnext,
                 {description = "view next", group = "tag"}),
             awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
                 {description = "go back", group = "tag"}),
@@ -274,22 +274,22 @@ local tasklist_buttons = gears.table.join(
             
             awful.key({ modkey }, "j",
                 function()
-                    awful.client.focus.bydirection("down")
+                    awful.client.focus.global_bydirection("down")
                     if client.focus then client.focus:raise() end
                 end),
             awful.key({ modkey }, "k",
                 function()
-                    awful.client.focus.bydirection("up")
+                    awful.client.focus.global_bydirection("up")
                     if client.focus then client.focus:raise() end
                 end),
             awful.key({ modkey }, "h",
                 function()
-                    awful.client.focus.bydirection("left")
+                    awful.client.focus.global_bydirection("left")
                     if client.focus then client.focus:raise() end
                 end),
             awful.key({ modkey }, "l",
                 function()
-                    awful.client.focus.bydirection("right")
+                    awful.client.focus.global_bydirection("right")
                     if client.focus then client.focus:raise() end
                 end),
 
@@ -299,10 +299,30 @@ local tasklist_buttons = gears.table.join(
             awful.key({ modkey, "Control"   }, "k", function () awful.client.swap.byidx( -1)    end,
                 {description = "swap with previous client by index", group = "client"}),
 
-            awful.key({ modkey, "Control" }, "h", function () awful.screen.focus_bydirection("left") end,
-                {description = "focus the next screen", group = "screen"}),
-            awful.key({ modkey, "Control" }, "l", function () awful.screen.focus_bydirection("right") end,
-                {description = "focus the previous screen", group = "screen"}),
+            -- awful.key({ modkey, "Control" }, "h", function () awful.screen.focus_bydirection("left") end,
+            --     {description = "focus the next screen", group = "screen"}),
+            -- awful.key({ modkey, "Control" }, "l", function () awful.screen.focus_bydirection("right") end,
+            --     {description = "focus the previous screen", group = "screen"}),
+
+            -- TODO: https://awesomewm.org/doc/api/classes/screen.html#screen.geometry
+
+            -- awful.key({ modkey, "Control"   }, "h",
+            --           function ()
+            --               local geo = awful.screen.geometry
+            --               if geo.x > 0 then
+            --                   awful.client.move_to_screen(awful.client.screen.index-1)
+            --               end
+            --           end,
+            --           {description = "move to screen on left", group = "screen"}),
+            -- awful.key({ modkey, "Control"   }, "l",
+            --           function ()
+            --               local geo = awful.screen.geometry
+            --               local width = root:size(1)
+            --               if geo.x + geo.width < width then
+            --                   awful.client:move_to_screen()
+            --               end
+            --           end,
+            --           {description = "move to screen on right", group = "screen"}),
 
             awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
                 {description = "jump to urgent client", group = "client"}),

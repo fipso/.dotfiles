@@ -20,6 +20,7 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'vimpostor/vim-tpipeline'
 Plug 'sonph/onehalf', { 'rtp': 'vim' }
+Plug 'github/copilot.vim'
 
 call plug#end()
 
@@ -45,8 +46,9 @@ set splitright
 set clipboard+=unnamedplus
 set hidden
 set cmdheight=1
-set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=%(%l,%c%V\ %=\ %P%)
-set so=3
+set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=\ %(%l,%c%V\ %=\ %P%)
+set so=5
+" set foldmethod=indent
 
 nnoremap <SPACE> <Nop>
 map <Space> <Leader>

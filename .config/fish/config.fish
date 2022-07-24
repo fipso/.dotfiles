@@ -19,7 +19,7 @@ if status is-interactive
     alias ts="tmux ls"
     alias ta="tmux a"
     alias config="/usr/bin/git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME"
-    alias wttr="curl wttr.in/Potsdam"
+    alias wttr="curl wttr.in/14482"
     alias b="bat"
     alias c="cd"
     alias icat="kitty +kitten icat"
@@ -27,9 +27,12 @@ if status is-interactive
     set -gx EDITOR nvim
     set -gx TERMINAL /usr/bin/kitty
     set -gx PATH "$HOME/.cargo/bin" $PATH;
+    set -gx PATH "$HOME/.emacs.d/bin" $PATH;
     set -gx PATH "$HOME/.config/scripts" $PATH;
     set -gx NNN_PLUG "p:preview-tui"
     set -gx NNN_FIFO "/tmp/nnn.fifo"
+    set -gx ANDROID_HOME "$HOME/Android/Sdk"
+    set -gx ANDROID_NDK_HOME "$HOME/Android/Sdk/ndk/25.0.8775105"
 
     set -g fish_handle_reflow 0
 
