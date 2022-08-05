@@ -36,6 +36,8 @@ if status is-interactive
 
     set -g fish_handle_reflow 0
 
+    set --universal nvm_default_version v16.14.1
+
     fish_vi_key_bindings
 end
 

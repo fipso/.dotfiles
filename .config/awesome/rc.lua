@@ -49,6 +49,7 @@ end
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
 beautiful.font = "monospace 14"
+beautiful.useless_gap = 10
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -394,7 +395,16 @@ local tasklist_buttons = gears.table.join(
 
             -- Prompt
             awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-            {description = "run prompt", group = "launcher"})
+            {description = "run prompt", group = "launcher"}),
+
+            -- Media Keys
+            awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%", false) end),
+            awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%", false) end),
+            awful.key({ }, "XF86AudioPlay", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
+            awful.key({ }, "XF86AudioStop", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop", false) end),
+            awful.key({ }, "XF86AudioPrev", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
+            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end)
+
             )
 
             clientkeys = gears.table.join(
@@ -439,15 +449,7 @@ local tasklist_buttons = gears.table.join(
             c.maximized_horizontal = not c.maximized_horizontal
             c:raise()
             end ,
-            {description = "(un)maximize horizontally", group = "client"}),
-
-            -- Media Keys
-            awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%", false) end),
-            awful.key({ }, "XF86AudioLowerVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ -5%", false) end),
-            awful.key({ }, "XF86AudioPlay", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
-            awful.key({ }, "XF86AudioStop", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop", false) end),
-            awful.key({ }, "XF86AudioPrev", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
-            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end)
+            {description = "(un)maximize horizontally", group = "client"})
             )
 
         -- Bind all key numbers to tags.
