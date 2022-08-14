@@ -29,6 +29,7 @@ if status is-interactive
     set -gx PATH "$HOME/.cargo/bin" $PATH;
     set -gx PATH "$HOME/.emacs.d/bin" $PATH;
     set -gx PATH "$HOME/.config/scripts" $PATH;
+    set -gx PATH "$HOME/.dotnet/tools" $PATH;
     set -gx NNN_PLUG "p:preview-tui"
     set -gx NNN_FIFO "/tmp/nnn.fifo"
     set -gx ANDROID_HOME "$HOME/Android/Sdk"
@@ -36,7 +37,7 @@ if status is-interactive
 
     set -g fish_handle_reflow 0
 
-    set --universal nvm_default_version v16.14.1
+    set --universal nvm_default_version lts
 
     fish_vi_key_bindings
 end
