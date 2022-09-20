@@ -6,6 +6,7 @@ call plug#begin()
 	Plug 'nvim-lua/plenary.nvim'
 	Plug 'nvim-telescope/telescope.nvim'
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+	Plug 'nvim-treesitter/nvim-treesitter-context'
 	Plug 'norcalli/nvim-colorizer.lua'
 	Plug 'pantharshit00/vim-prisma'
 	Plug 'tpope/vim-fugitive'
@@ -13,13 +14,14 @@ call plug#begin()
 	Plug 'ayu-theme/ayu-vim'
 	"Plug 'lukas-reineke/indent-blankline.nvim'
 	Plug 'folke/todo-comments.nvim'
-	Plug 'junegunn/vim-peekaboo'
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-commentary'
-	Plug 'vimpostor/vim-tpipeline'
 	Plug 'sonph/onehalf', { 'rtp': 'vim' }
-	Plug 'github/copilot.vim'
+	"Plug 'github/copilot.vim'
+	Plug 'rmagatti/auto-session'
+	Plug 'rmagatti/session-lens'
+	Plug 'ThePrimeagen/vim-be-good'
 call plug#end()
 
 runtime coc.vim
@@ -31,17 +33,8 @@ hi Normal guibg=None ctermbg=NONE
 runtime theme.vim
 
 lua require'colorizer'.setup()
-lua << EOF
-	require("todo-comments").setup {
-		highlight = {
-			pattern = [[.*<(KEYWORDS)\s*]]
-		},
-		search = {
-			command = "rg",
-			pattern = [[\b(KEYWORDS)\b]]
-		}
-}
-EOF
+lua	require'todo-comments'.setup()
+lua require'auto-session'.setup()
 
 "let g:gruvbox_italic=1
 "colorscheme gruvbox
@@ -54,9 +47,11 @@ set splitright
 set clipboard+=unnamedplus
 set hidden
 set cmdheight=1
-set statusline=%f\ %{fugitive#statusline()}\ %h%w%m%r\ %=\ %(%l,%c%V\ %=\ %P%)
-set so=5
+set statusline=%f\ %{coc#status()}%{get(b:,'coc_current_function','')}\ %{fugitive#statusline()}\ %h%w%m%r\ %=\ %(%l,%c%V\ %=\ %P%)
+set so=2
 set noea
+set spelllang=en-gb
+set signcolumn=no
 " set foldmethod=indent
 
 nnoremap <SPACE> <Nop>
@@ -69,9 +64,10 @@ nnoremap <leader>vs <C-w>v
 " Find files using Telescope command-line sugar.
 nnoremap <leader>f <cmd>Telescope find_files<cr>
 nnoremap <leader>g <cmd>Telescope live_grep<cr>
-nnoremap <leader>b <cmd>Telescope buffers<cr>
+nnoremap <leader>u <cmd>Telescope buffers<cr>
 nnoremap <leader>t <cmd>TodoTelescope<cr>
 nnoremap <leader>r <cmd>Telescope git_branches<cr>
+nnoremap <leader>s <cmd>Telescope session-lens search_session<cr>
 
 function! NumberToggle()
   if(&rnu == 1)
@@ -95,3 +91,8 @@ autocmd BufReadPost *
       \ if line("'\"") > 0 && line("'\"") <= line("$") |
       \   exe "normal! g`\"" |
       \ endif
+
+
+highlight LineNr guifg=yellow gui=bold
+highlight LineNrBelow guifg=gray 
+highlight LineNrAbove guifg=gray 

@@ -30,18 +30,20 @@ if status is-interactive
     set -gx PATH "$HOME/.emacs.d/bin" $PATH;
     set -gx PATH "$HOME/.config/scripts" $PATH;
     set -gx PATH "$HOME/.dotnet/tools" $PATH;
+    set -gx PATH "$HOME/go/bin" $PATH;
     set -gx NNN_PLUG "p:preview-tui"
     set -gx NNN_FIFO "/tmp/nnn.fifo"
     set -gx ANDROID_HOME "$HOME/Android/Sdk"
     set -gx ANDROID_NDK_HOME "$HOME/Android/Sdk/ndk/25.0.8775105"
 
-    set -g fish_handle_reflow 0
+    set PATH $PATH /home/fipso/.local/bin
+    fish_add_path /home/fipso/.spicetify
+    set -gx PNPM_HOME "/home/fipso/.local/share/pnpm"
+    set -gx PATH "$PNPM_HOME" $PATH
 
+    set -g fish_handle_reflow 0
     set --universal nvm_default_version lts
 
+    fish_ssh_agent
     fish_vi_key_bindings
 end
-
-# Created by `userpath` on 2022-04-29 20:37:44
-set PATH $PATH /home/fipso/.local/bin
-fish_add_path /home/fipso/.spicetify

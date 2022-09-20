@@ -48,8 +48,8 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "monospace 14"
-beautiful.useless_gap = 10
+beautiful.font = "hack 14"
+--beautiful.useless_gap = 10
 
 -- This is used later as the default terminal and editor to run.
 terminal = "kitty"
@@ -184,6 +184,48 @@ local tasklist_buttons = gears.table.join(
     -- Re-set wallpaper when a screen's geometry changes (e.g. different resolution)
     --screen.connect_signal("property::geometry", set_wallpaper)
 
+
+    -- Create a widget and update its content using the output of a shell
+    -- command every 10 seconds:
+    local mybatterybar = wibox.widget {
+        {
+            min_value    = 0,
+            max_value    = 100,
+            value        = 0,
+            paddings     = 1,
+            border_width = 1,
+            forced_width = 50,
+            id           = "mypb",
+            widget       = wibox.widget.progressbar,
+        },
+        {
+            id           = "mytb",
+            text         = "100%",
+            widget       = wibox.widget.textbox,
+        },
+        layout      = wibox.layout.stack,
+        set_battery = function(self, val)
+            self.mytb.text  = tonumber(val).."%"
+            self.mypb.value = tonumber(val)
+        end,
+    }
+
+    gears.timer {
+        timeout   = 10,
+        call_now  = true,
+        autostart = true,
+        callback  = function()
+            -- You should read it from `/sys/class/power_supply/` (on Linux)
+            -- instead of spawning a shell. This is only an example.
+            awful.spawn.easy_async(
+                {"cat", "/sys/class/power_supply/BAT0/capacity"},
+                function(out)
+                    mybatterybar.battery = out
+                end
+                )
+        end
+    }
+
     awful.screen.connect_for_each_screen(function(s)
         -- Wallpaper
         --set_wallpaper(s)
@@ -229,6 +271,7 @@ local tasklist_buttons = gears.table.join(
                 },
                 s.mytasklist, -- Middle widget
                 { -- Right widgets
+                    mybatterybar,
                     layout = wibox.layout.fixed.horizontal,
                     mykeyboardlayout,
                     wibox.widget.systray(),
@@ -257,6 +300,12 @@ local tasklist_buttons = gears.table.join(
                 {description = "view next", group = "tag"}),
             awful.key({ modkey,           }, "Escape", awful.tag.history.restore,
                 {description = "go back", group = "tag"}),
+
+            -- arrow bindings
+            awful.key({ modkey }, "Left",   awful.tag.viewprev,
+                {description = "view previous", group = "tag"}),
+            awful.key({ modkey }, "Right",  awful.tag.viewnext,
+                {description = "view next", group = "tag"}),
 
             -- awful.key({ modkey,           }, "j",
             --     function ()
@@ -403,9 +452,10 @@ local tasklist_buttons = gears.table.join(
             awful.key({ }, "XF86AudioPlay", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
             awful.key({ }, "XF86AudioStop", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop", false) end),
             awful.key({ }, "XF86AudioPrev", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
-            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end)
+            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end),
 
-            )
+            awful.key({ modkey, "Control" }, "n", function () awful.spawn("variety --next") end,
+            {description = "next wallpaper", group = "apperance"}))
 
             clientkeys = gears.table.join(
             awful.key({ modkey,           }, "f",
@@ -643,8 +693,11 @@ local tasklist_buttons = gears.table.join(
         -- }}}
 
         awful.spawn("picom")
+        awful.spawn("variety")
         --awful.spawn.with_shell("polybar main")
         --awful.spawn.with_shell("polybar secondary")
         awful.spawn.with_shell("bash ~/.config/scripts/redshift.sh")
-        awful.spawn.with_shell("nitrogen --restore")
+        --awful.spawn.with_shell("nitrogen --restore")
+        awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
+        awful.spawn("nm-applet")
         --awful.spawn.with_shell("feh --bg-scale ~/Pictures/EldenRing.jpg")
