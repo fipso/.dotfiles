@@ -19,8 +19,6 @@ call plug#begin()
 	Plug 'tpope/vim-commentary'
 	Plug 'sonph/onehalf', { 'rtp': 'vim' }
 	"Plug 'github/copilot.vim'
-	Plug 'rmagatti/auto-session'
-	Plug 'rmagatti/session-lens'
 	Plug 'ThePrimeagen/vim-be-good'
 call plug#end()
 
@@ -34,7 +32,6 @@ runtime theme.vim
 
 lua require'colorizer'.setup()
 lua	require'todo-comments'.setup()
-lua require'auto-session'.setup()
 
 "let g:gruvbox_italic=1
 "colorscheme gruvbox
