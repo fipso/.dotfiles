@@ -7,7 +7,7 @@ lua require'nvim-tree'.setup {
                 \ }
             \ },
 	    \ view = {
-	        \ preserve_window_proportions = true,
-          \ side = "right"
+	        \ preserve_window_proportions = false,
+          \ side = "left"
             \ }
         \ }

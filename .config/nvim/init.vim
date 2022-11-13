@@ -1,6 +1,6 @@
 call plug#begin()
+	" Standard Stuff
 	Plug 'sheerun/vim-polyglot'
-	Plug 'neoclide/coc.nvim', {'branch': 'release'}
 	Plug 'kyazdani42/nvim-web-devicons'
 	Plug 'kyazdani42/nvim-tree.lua'
 	Plug 'nvim-lua/plenary.nvim'
@@ -8,22 +8,43 @@ call plug#begin()
 	Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 	Plug 'nvim-treesitter/nvim-treesitter-context'
 	Plug 'norcalli/nvim-colorizer.lua'
-	Plug 'pantharshit00/vim-prisma'
-	Plug 'tpope/vim-fugitive'
-	Plug 'sindrets/diffview.nvim'
-	Plug 'ayu-theme/ayu-vim'
-	"Plug 'lukas-reineke/indent-blankline.nvim'
 	Plug 'folke/todo-comments.nvim'
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-commentary'
+	" LSP
+	Plug 'williamboman/mason.nvim'
+	Plug 'williamboman/mason-lspconfig.nvim'
+	Plug 'neovim/nvim-lspconfig'
+	Plug 'jose-elias-alvarez/null-ls.nvim'
+	Plug 'MunifTanjim/prettier.nvim'
+	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+	Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+	" Git
+	Plug 'tpope/vim-fugitive'
+	Plug 'sindrets/diffview.nvim'
+	Plug 'pwntester/octo.nvim'
+	" Theme
+	Plug 'ayu-theme/ayu-vim'
 	Plug 'sonph/onehalf', { 'rtp': 'vim' }
-	"Plug 'github/copilot.vim'
+	" Learn Vim
 	Plug 'ThePrimeagen/vim-be-good'
+	" Debugging
+	Plug 'mfussenegger/nvim-dap'
+	Plug 'rcarriga/nvim-dap-ui'
+	Plug 'fipso/nvim-dap-go'
+	Plug 'nvim-telescope/telescope-dap.nvim'
+	Plug 'theHamsta/nvim-dap-virtual-text'
+	" Spyware
+	Plug 'wakatime/vim-wakatime'
+	" Disabled
+	"Plug 'github/copilot.vim'
+	"Plug 'lukas-reineke/indent-blankline.nvim'
 call plug#end()
 
-runtime coc.vim
 runtime tree.vim
+runtime lsp.vim
 
 set termguicolors 
 hi Normal guibg=None ctermbg=NONE
@@ -32,6 +53,12 @@ runtime theme.vim
 
 lua require'colorizer'.setup()
 lua	require'todo-comments'.setup()
+lua require'dap-go'.setup()
+lua require'telescope'.load_extension('dap')
+lua require'nvim-dap-virtual-text'.setup()
+lua require'octo'.setup()
+
+runtime dapui.vim
 
 "let g:gruvbox_italic=1
 "colorscheme gruvbox
@@ -44,11 +71,12 @@ set splitright
 set clipboard+=unnamedplus
 set hidden
 set cmdheight=1
-set statusline=%f\ %{coc#status()}%{get(b:,'coc_current_function','')}\ %{fugitive#statusline()}\ %h%w%m%r\ %=\ %(%l,%c%V\ %=\ %P%)
+" set statusline=%f\ %{coc#status()}%{get(b:,'coc_current_function','')}\ %{fugitive#statusline()}\ %h%w%m%r\ %=\ %(%l,%c%V\ %=\ %P%)
 set so=2
 set noea
 set spelllang=en-gb
-set signcolumn=no
+set signcolumn=number
+" set signcolumn=no
 " set foldmethod=indent
 
 nnoremap <SPACE> <Nop>
@@ -61,11 +89,11 @@ nnoremap <leader>vs <C-w>v
 " Find files using Telescope command-line sugar.
 nnoremap <leader>f <cmd>Telescope find_files<cr>
 nnoremap <leader>g <cmd>Telescope live_grep<cr>
-nnoremap <leader>u <cmd>Telescope buffers<cr>
 nnoremap <leader>t <cmd>TodoTelescope<cr>
 nnoremap <leader>r <cmd>Telescope git_branches<cr>
-nnoremap <leader>s <cmd>Telescope session-lens search_session<cr>
+nnoremap <leader>n <cmd>NvimTreeToggle<cr>
 
+" Numbers
 function! NumberToggle()
   if(&rnu == 1)
     set nornu
@@ -73,15 +101,22 @@ function! NumberToggle()
     set rnu
   endif
 endfunc
-
 nnoremap <leader>l :call NumberToggle()<cr>
 
+" Movement
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-command! -nargs=0 P :CocCommand prettier.forceFormatDocument
+" DAP Keymaps
+nnoremap <leader>d <cmd>lua require'dapui'.toggle()<cr>
+nnoremap <leader>c <cmd>DapContinue<cr>
+nnoremap <leader>i <cmd>DapStepInto<cr>
+nnoremap <C-N> <cmd>DapStepOver<cr>
+nnoremap <C-B> <cmd>DapToggleBreakpoint<cr>
+
+command! -nargs=0 P :Prettier
 
 " Return to last edit position when opening files (You want this!)
 autocmd BufReadPost *
@@ -90,6 +125,6 @@ autocmd BufReadPost *
       \ endif
 
 
-highlight LineNr guifg=yellow gui=bold
+highlight LineNr guifg=darkyellow gui=bold
 highlight LineNrBelow guifg=gray 
 highlight LineNrAbove guifg=gray 
