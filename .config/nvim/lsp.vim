@@ -30,14 +30,18 @@ local on_attach = function(client, bufnr)
   end, bufopts)
   vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, bufopts)
   vim.keymap.set('n', '<space>rn', vim.lsp.buf.rename, bufopts)
-  vim.keymap.set('n', '<space>ca', vim.lsp.buf.code_action, bufopts)
+  vim.keymap.set('n', '<space>a', vim.lsp.buf.code_action, bufopts)
   vim.keymap.set('n', 'gr', vim.lsp.buf.references, bufopts)
-  -- vim.keymap.set('n', '<space>f', function() vim.lsp.buf.format { async = true } end, bufopts)
+  vim.keymap.set('n', '<space>l', function() vim.lsp.buf.format { async = true } end, bufopts)
 end
 
 require("mason").setup()
+require("null-ls").setup()
+require("mason-null-ls").setup({
+    automatic_setup = true,
+})
+require 'mason-null-ls'.setup_handlers()
 require("mason-lspconfig").setup()
-
 require("mason-lspconfig").setup_handlers {
 	-- The first entry (without a key) will be the default handler
 	-- and will be called for each installed server that doesn't have

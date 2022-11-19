@@ -1,3 +1,10 @@
+" Auto install plug
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 call plug#begin()
 	" Standard Stuff
 	Plug 'sheerun/vim-polyglot'
@@ -12,12 +19,14 @@ call plug#begin()
 	Plug 'tpope/vim-surround'
 	Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-commentary'
+	Plug 'pantharshit00/vim-prisma'
 	" LSP
 	Plug 'williamboman/mason.nvim'
-	Plug 'williamboman/mason-lspconfig.nvim'
-	Plug 'neovim/nvim-lspconfig'
 	Plug 'jose-elias-alvarez/null-ls.nvim'
-	Plug 'MunifTanjim/prettier.nvim'
+	Plug 'jayp0521/mason-null-ls.nvim'
+	Plug 'neovim/nvim-lspconfig'
+	Plug 'williamboman/mason-lspconfig.nvim'
+	" Plug 'MunifTanjim/prettier.nvim'
 	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 	Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
@@ -101,7 +110,7 @@ function! NumberToggle()
     set rnu
   endif
 endfunc
-nnoremap <leader>l :call NumberToggle()<cr>
+nnoremap <leader>o :call NumberToggle()<cr>
 
 " Movement
 nnoremap <C-J> <C-W><C-J>

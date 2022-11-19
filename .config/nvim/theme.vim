@@ -1,3 +1,2 @@
-let ayucolor="mirage"
-colorscheme ayu
-hi CocMenuSel guibg=#222222
+colorscheme onehalflight
+hi CocMenuSel guibg=#ffffff
