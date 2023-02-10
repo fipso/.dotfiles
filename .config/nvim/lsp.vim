@@ -1,4 +1,12 @@
-let g:coq_settings = { 'auto_start': 'shut-up', 'keymap.bigger_preview': '', 'keymap.jump_to_mark': '' }
+let g:coq_settings = { 'auto_start': 'shut-up', 'keymap.bigger_preview': '', 'keymap.jump_to_mark': '', 'keymap.recommended': v:false }
+
+" Keybindings
+ino <silent><expr> <Esc>   pumvisible() ? "\<C-e><Esc>" : "\<Esc>"
+ino <silent><expr> <C-c>   pumvisible() ? "\<C-e><C-c>" : "\<C-c>"
+ino <silent><expr> <BS>    pumvisible() ? "\<C-e><BS>"  : "\<BS>"
+ino <silent><expr> <CR>    pumvisible() ? (complete_info().selected == -1 ? "\<C-e><CR>" : "\<C-y>") : "\<CR>"
+" ino <silent><expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
+" ino <silent><expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<BS>"
 
 lua << EOF
 -- Mappings.
@@ -47,8 +55,11 @@ require("mason-lspconfig").setup_handlers {
 	-- and will be called for each installed server that doesn't have
 	-- a dedicated handler.
 	function (server_name) -- default handler (optional)
+		local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 		require("lspconfig")[server_name].setup {
-			on_attach = on_attach
+			on_attach = on_attach,
+			capabilities = capabilities
 		}
 		end
 }

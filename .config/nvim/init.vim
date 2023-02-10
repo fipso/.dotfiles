@@ -20,6 +20,7 @@ call plug#begin()
 	Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-commentary'
 	Plug 'pantharshit00/vim-prisma'
+	Plug 'romgrk/barbar.nvim'
 	" LSP
 	Plug 'williamboman/mason.nvim'
 	Plug 'jose-elias-alvarez/null-ls.nvim'
@@ -27,9 +28,20 @@ call plug#begin()
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'williamboman/mason-lspconfig.nvim'
 	" Plug 'MunifTanjim/prettier.nvim'
-	Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
-	Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-	Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}
+	" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+	" Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
+	" Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}'
+
+	" Complete
+	Plug 'hrsh7th/cmp-nvim-lsp'
+	Plug 'hrsh7th/cmp-buffer'
+	Plug 'hrsh7th/cmp-path'
+	Plug 'hrsh7th/cmp-cmdline'
+	Plug 'hrsh7th/nvim-cmp'
+	Plug 'hrsh7th/cmp-vsnip'
+	Plug 'hrsh7th/vim-vsnip'
+	Plug 'onsails/lspkind.nvim'
+
 	" Git
 	Plug 'tpope/vim-fugitive'
 	Plug 'sindrets/diffview.nvim'
@@ -47,11 +59,15 @@ call plug#begin()
 	Plug 'theHamsta/nvim-dap-virtual-text'
 	" Spyware
 	Plug 'wakatime/vim-wakatime'
+	" AI
+	Plug 'github/copilot.vim'
 	" Disabled
-	"Plug 'github/copilot.vim'
 	"Plug 'lukas-reineke/indent-blankline.nvim'
 call plug#end()
 
+set completeopt=menu,menuone,noselect
+
+runtime cmp.vim
 runtime tree.vim
 runtime lsp.vim
 
@@ -59,6 +75,18 @@ set termguicolors
 hi Normal guibg=None ctermbg=NONE
 
 runtime theme.vim
+
+highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+highlight! link CmpItemAbbrMatchFuzzy CmpItemAbbrMatch
+highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
+highlight! link CmpItemKindInterface CmpItemKindVariable
+highlight! link CmpItemKindText CmpItemKindVariable
+highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
+highlight! link CmpItemKindMethod CmpItemKindFunction
+highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
+highlight! link CmpItemKindProperty CmpItemKindKeyword
+highlight! link CmpItemKindUnit CmpItemKindKeyword
 
 lua require'colorizer'.setup()
 lua	require'todo-comments'.setup()
@@ -119,11 +147,15 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " DAP Keymaps
-nnoremap <leader>d <cmd>lua require'dapui'.toggle()<cr>
-nnoremap <leader>c <cmd>DapContinue<cr>
-nnoremap <leader>i <cmd>DapStepInto<cr>
-nnoremap <C-N> <cmd>DapStepOver<cr>
-nnoremap <C-B> <cmd>DapToggleBreakpoint<cr>
+" nnoremap <leader>d <cmd>lua require'dapui'.toggle()<cr>
+" nnoremap <leader>c <cmd>DapContinue<cr>
+" nnoremap <leader>i <cmd>DapStepInto<cr>
+" nnoremap <C-N> <cmd>DapStepOver<cr>
+" nnoremap <C-B> <cmd>DapToggleBreakpoint<cr>
+
+" VimRC Shortcuts
+nnoremap <Leader>c :e ~/.config/nvim/<CR>
+nnoremap <Leader>cc :source $MYVIMRC<CR>
 
 command! -nargs=0 P :Prettier
 

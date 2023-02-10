@@ -48,7 +48,7 @@ end
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
 beautiful.init(gears.filesystem.get_themes_dir() .. "default/theme.lua")
-beautiful.font = "hack 14"
+beautiful.font = "hack 16"
 beautiful.useless_gap = 10
 
 -- This is used later as the default terminal and editor to run.
@@ -247,7 +247,11 @@ local tasklist_buttons = gears.table.join(
             s.mytaglist = awful.widget.taglist {
                 screen  = s,
                 filter  = awful.widget.taglist.filter.all,
-                buttons = taglist_buttons
+                buttons = taglist_buttons,
+                layout = {
+                    spacing = 5,
+                    layout = wibox.layout.fixed.horizontal
+                }
             }
 
             -- Create a tasklist widget
@@ -258,7 +262,7 @@ local tasklist_buttons = gears.table.join(
             }
 
             -- Create the wibox
-            s.mywibox = awful.wibar({ position = "top", screen = s })
+            s.mywibox = awful.wibar({ position = "top", screen = s, height = 30 })
 
             -- Add widgets to the wibox
             s.mywibox:setup {
@@ -701,6 +705,7 @@ local tasklist_buttons = gears.table.join(
         awful.spawn.with_shell("bash ~/.config/scripts/redshift.sh")
         --awful.spawn.with_shell("nitrogen --restore")
         -- awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
+        awful.spawn.with_shell("setxkbmap eu")
         awful.spawn.with_shell("setxkbmap -option caps:escape")
         awful.spawn("nm-applet")
         --awful.spawn.with_shell("feh --bg-scale ~/Pictures/EldenRing.jpg")
