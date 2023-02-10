@@ -20,17 +20,19 @@ call plug#begin()
 	Plug 'tpope/vim-sensible'
 	Plug 'tpope/vim-commentary'
 	Plug 'pantharshit00/vim-prisma'
-	Plug 'romgrk/barbar.nvim'
+	Plug 'rcarriga/nvim-notify'
+	" Plug 'romgrk/barbar.nvim'
 	" LSP
 	Plug 'williamboman/mason.nvim'
 	Plug 'jose-elias-alvarez/null-ls.nvim'
 	Plug 'jayp0521/mason-null-ls.nvim'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'williamboman/mason-lspconfig.nvim'
+	Plug 'onsails/diaglist.nvim'
 	" Plug 'MunifTanjim/prettier.nvim'
 	" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 	" Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
-	" Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}'
+  " Plug 'ms-jpq/coq.thirdparty', {'branch': '3p'}'
 
 	" Complete
 	Plug 'hrsh7th/cmp-nvim-lsp'
@@ -76,31 +78,19 @@ hi Normal guibg=None ctermbg=NONE
 
 runtime theme.vim
 
-highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
-highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
-highlight! link CmpItemAbbrMatchFuzzy CmpItemAbbrMatch
-highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
-highlight! link CmpItemKindInterface CmpItemKindVariable
-highlight! link CmpItemKindText CmpItemKindVariable
-highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
-highlight! link CmpItemKindMethod CmpItemKindFunction
-highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
-highlight! link CmpItemKindProperty CmpItemKindKeyword
-highlight! link CmpItemKindUnit CmpItemKindKeyword
-
 lua require'colorizer'.setup()
 lua	require'todo-comments'.setup()
 lua require'dap-go'.setup()
 lua require'telescope'.load_extension('dap')
 lua require'nvim-dap-virtual-text'.setup()
 lua require'octo'.setup()
+lua require'diaglist'.init()
 
 runtime dapui.vim
 
 "let g:gruvbox_italic=1
 "colorscheme gruvbox
 
-set rnu
 set number
 set mouse=a
 set splitbelow
@@ -140,11 +130,26 @@ function! NumberToggle()
 endfunc
 nnoremap <leader>o :call NumberToggle()<cr>
 
+" Wrap Toggle
+set nowrap
+function! WrapToggle()
+  if(&wrap == 1)
+    set nowrap
+  else
+    set wrap
+  endif
+endfunc
+nnoremap <leader>w :call WrapToggle()<cr>
+
 " Movement
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" Diaglist
+nmap <space>q <cmd>lua require('diaglist').open_all_diagnostics()<cr>
+nmap <space>qq <cmd>lua require('diaglist').open_buffer_diagnostics()<cr>
 
 " DAP Keymaps
 " nnoremap <leader>d <cmd>lua require'dapui'.toggle()<cr>
@@ -169,3 +174,16 @@ autocmd BufReadPost *
 highlight LineNr guifg=darkyellow gui=bold
 highlight LineNrBelow guifg=gray 
 highlight LineNrAbove guifg=gray 
+
+" Cmp Colors
+highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080
+highlight! CmpItemAbbrMatch guibg=NONE guifg=#569CD6
+highlight! link CmpItemAbbrMatchFuzzy CmpItemAbbrMatch
+highlight! CmpItemKindVariable guibg=NONE guifg=#9CDCFE
+highlight! link CmpItemKindInterface CmpItemKindVariable
+highlight! link CmpItemKindText CmpItemKindVariable
+highlight! CmpItemKindFunction guibg=NONE guifg=#C586C0
+highlight! link CmpItemKindMethod CmpItemKindFunction
+highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
+highlight! link CmpItemKindProperty CmpItemKindKeyword
+highlight! link CmpItemKindUnit CmpItemKindKeyword
