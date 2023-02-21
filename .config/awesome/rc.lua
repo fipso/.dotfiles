@@ -705,6 +705,7 @@ local tasklist_buttons = gears.table.join(
         awful.spawn.with_shell("bash ~/.config/scripts/redshift.sh")
         --awful.spawn.with_shell("nitrogen --restore")
         -- awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
+        awful.spawn.with_shell("bash ~/.config/scripts/east_monitors.sh")
         awful.spawn.with_shell("setxkbmap eu")
         awful.spawn.with_shell("setxkbmap -option caps:escape")
         awful.spawn("nm-applet")
