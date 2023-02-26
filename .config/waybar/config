@@ -7,7 +7,7 @@
     // Choose the order of the modules
     "modules-left": ["wlr/workspaces"],
     "modules-center": ["wlr/window"],
-    "modules-right": ["idle_inhibitor", "pulseaudio", "network", "cpu", "memory", "temperature", "keyboard-state", "wlr/language", "clock", "tray"],
+    "modules-right": ["idle_inhibitor", "custom/media", "pulseaudio", "network", "cpu", "memory", "temperature", "keyboard-state", "wlr/language", "clock", "tray"],
     // Modules configuration
     "wlr/workspaces": {
         "on-click": "activate"
@@ -105,6 +105,14 @@
             "default": ["", "", ""]
         },
         "on-click": "pavucontrol"
+    },
+    "custom/media": {
+        "exec": "python3 ~/.config/scripts/mediaplayer.py --player spotify",
+        "format": "{}  ",
+        "return-type": "json",
+        "on-click": "playerctl play-pause",
+        "on-scroll-up": "playerctl next",
+        "on-scroll-down": "playerctl previous"
     }
     // "custom/media": {
     //     "format": "{icon} {}",

@@ -85,7 +85,6 @@ lua require'telescope'.load_extension('dap')
 lua require'nvim-dap-virtual-text'.setup()
 lua require'octo'.setup()
 lua require'diaglist'.init()
-
 runtime dapui.vim
 
 "let g:gruvbox_italic=1
@@ -187,3 +186,9 @@ highlight! link CmpItemKindMethod CmpItemKindFunction
 highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4
 highlight! link CmpItemKindProperty CmpItemKindKeyword
 highlight! link CmpItemKindUnit CmpItemKindKeyword
+
+lua << EOF
+require("notify").setup({
+  background_colour = "#000000",
+})
+EOF

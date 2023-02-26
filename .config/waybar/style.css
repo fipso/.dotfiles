@@ -1,7 +1,8 @@
 * {
     /* `otf-font-awesome` is required to be installed for icons */
-    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
-    font-size: 13px;
+    font-family: "CaskaydiaCove Nerd Font"; 
+    font-size: 15px;
+    font-weight: 600;
 }
 
 window#waybar {
@@ -30,7 +31,7 @@ window#waybar.termite {
 }
 
 window#waybar.chromium {
-    background-color: #000000;
+    background-color: #444444;
     border: none;
 }
 
@@ -113,7 +114,7 @@ button:hover {
 
 #battery {
     background-color: #ffffff;
-    color: #000000;
+    color: #444444;
 }
 
 #battery.charging, #battery.plugged {
@@ -124,7 +125,7 @@ button:hover {
 @keyframes blink {
     to {
         background-color: #ffffff;
-        color: #000000;
+        color: #444444;
     }
 }
 
@@ -139,12 +140,12 @@ button:hover {
 }
 
 label:focus {
-    background-color: #000000;
+    background-color: #444444;
 }
 
 #cpu {
     background-color: #2ecc71;
-    color: #000000;
+    color: #444444;
 }
 
 #memory {
@@ -169,7 +170,7 @@ label:focus {
 
 #pulseaudio {
     background-color: #f1c40f;
-    color: #000000;
+    color: #444444;
 }
 
 #pulseaudio.muted {
@@ -179,7 +180,7 @@ label:focus {
 
 #wireplumber {
     background-color: #fff0f5;
-    color: #000000;
+    color: #444444;
 }
 
 #wireplumber.muted {
@@ -257,7 +258,7 @@ label:focus {
 
 #keyboard-state {
     background: #97e1ad;
-    color: #000000;
+    color: #444444;
     padding: 0 0px;
     margin: 0 5px;
     min-width: 16px;
