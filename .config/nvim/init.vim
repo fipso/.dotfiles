@@ -29,6 +29,7 @@ call plug#begin()
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'williamboman/mason-lspconfig.nvim'
 	Plug 'onsails/diaglist.nvim'
+	Plug 'Olical/conjure'
 	" Plug 'MunifTanjim/prettier.nvim'
 	" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 	" Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
