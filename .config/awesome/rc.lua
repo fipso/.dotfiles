@@ -187,44 +187,44 @@ local tasklist_buttons = gears.table.join(
 
     -- Create a widget and update its content using the output of a shell
     -- command every 10 seconds:
-    -- local mybatterybar = wibox.widget {
-    --     {
-    --         min_value    = 0,
-    --         max_value    = 100,
-    --         value        = 0,
-    --         paddings     = 1,
-    --         border_width = 1,
-    --         forced_width = 50,
-    --         id           = "mypb",
-    --         widget       = wibox.widget.progressbar,
-    --     },
-    --     {
-    --         id           = "mytb",
-    --         text         = "100%",
-    --         widget       = wibox.widget.textbox,
-    --     },
-    --     layout      = wibox.layout.stack,
-    --     set_battery = function(self, val)
-    --         self.mytb.text  = tonumber(val).."%"
-    --         self.mypb.value = tonumber(val)
-    --     end,
-    -- }
+    local mybatterybar = wibox.widget {
+        {
+            min_value    = 0,
+            max_value    = 100,
+            value        = 0,
+            paddings     = 1,
+            border_width = 1,
+            forced_width = 50,
+            id           = "mypb",
+            widget       = wibox.widget.progressbar,
+        },
+        {
+            id           = "mytb",
+            text         = "100%",
+            widget       = wibox.widget.textbox,
+        },
+        layout      = wibox.layout.stack,
+        set_battery = function(self, val)
+            self.mytb.text  = tonumber(val).."%"
+            self.mypb.value = tonumber(val)
+        end,
+    }
 
-    -- gears.timer {
-    --     timeout   = 10,
-    --     call_now  = true,
-    --     autostart = true,
-    --     callback  = function()
-    --         -- You should read it from `/sys/class/power_supply/` (on Linux)
-    --         -- instead of spawning a shell. This is only an example.
-    --         awful.spawn.easy_async(
-    --             {"cat", "/sys/class/power_supply/BAT0/capacity"},
-    --             function(out)
-    --                 mybatterybar.battery = out
-    --             end
-    --             )
-    --     end
-    -- }
+    gears.timer {
+        timeout   = 10,
+        call_now  = true,
+        autostart = true,
+        callback  = function()
+            -- You should read it from `/sys/class/power_supply/` (on Linux)
+            -- instead of spawning a shell. This is only an example.
+            awful.spawn.easy_async(
+                {"cat", "/sys/class/power_supply/BAT0/capacity"},
+                function(out)
+                    mybatterybar.battery = out
+                end
+                )
+        end
+    }
 
     awful.screen.connect_for_each_screen(function(s)
         -- Wallpaper
@@ -275,7 +275,7 @@ local tasklist_buttons = gears.table.join(
                 },
                 s.mytasklist, -- Middle widget
                 { -- Right widgets
-                    -- mybatterybar,
+                    mybatterybar,
                     layout = wibox.layout.fixed.horizontal,
                     mykeyboardlayout,
                     wibox.widget.systray(),
@@ -705,8 +705,9 @@ local tasklist_buttons = gears.table.join(
         awful.spawn.with_shell("bash ~/.config/scripts/redshift.sh")
         --awful.spawn.with_shell("nitrogen --restore")
         -- awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
-        awful.spawn.with_shell("bash ~/.config/scripts/east_monitors.sh")
+        -- awful.spawn.with_shell("bash ~/.config/scripts/east_monitors.sh")
         awful.spawn.with_shell("setxkbmap eu")
+        awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
         awful.spawn.with_shell("setxkbmap -option caps:escape")
         awful.spawn("nm-applet")
         --awful.spawn.with_shell("feh --bg-scale ~/Pictures/EldenRing.jpg")

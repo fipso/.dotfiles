@@ -44,6 +44,5 @@ if status is-interactive
     set -g fish_handle_reflow 0
     set --universal nvm_default_version lts
 
-    fish_ssh_agent
     fish_vi_key_bindings
 end
