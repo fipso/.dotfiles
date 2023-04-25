@@ -44,11 +44,17 @@ local on_attach = function(client, bufnr)
 end
 
 require("mason").setup()
-require("null-ls").setup()
 require("mason-null-ls").setup({
     automatic_setup = true,
+    automatic_installation = false,
+    handlers = {},
 })
-require 'mason-null-ls'.setup_handlers()
+require("null-ls").setup({
+	sources = {
+
+	}
+})
+--require("mason-null-ls").setup_handlers()
 require("mason-lspconfig").setup()
 require("mason-lspconfig").setup_handlers {
 	-- The first entry (without a key) will be the default handler

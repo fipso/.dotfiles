@@ -23,13 +23,13 @@ call plug#begin()
 	Plug 'rcarriga/nvim-notify'
 	" Plug 'romgrk/barbar.nvim'
 	" LSP
-	Plug 'williamboman/mason.nvim'
+	Plug 'williamboman/mason.nvim', { 'do': ':MasonUpdate' }
 	Plug 'jose-elias-alvarez/null-ls.nvim'
 	Plug 'jayp0521/mason-null-ls.nvim'
 	Plug 'neovim/nvim-lspconfig'
 	Plug 'williamboman/mason-lspconfig.nvim'
 	Plug 'onsails/diaglist.nvim'
-	Plug 'Olical/conjure'
+	" Plug 'Olical/conjure'
 	" Plug 'MunifTanjim/prettier.nvim'
 	" Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 	" Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
