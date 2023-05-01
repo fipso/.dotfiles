@@ -29,17 +29,16 @@ require("lazy").setup({
 			"williamboman/mason.nvim",
 			"jose-elias-alvarez/null-ls.nvim",
 		}
-		--config = function()
-		--	-- require("your.null-ls.config") -- require your null-ls config here (example below)
-		--end,
 	},
 	"hrsh7th/cmp-nvim-lsp",
 	"hrsh7th/cmp-buffer",
 	"hrsh7th/cmp-path",
 	"hrsh7th/cmp-cmdline",
 	"hrsh7th/nvim-cmp",
+	"L3MON4D3/LuaSnip",
+	"saadparwaiz1/cmp_luasnip",
 	"folke/tokyonight.nvim",
-	"ayu-theme/ayu-vim",
+	"Shatur/neovim-ayu",
 	"junegunn/fzf",
 	"junegunn/fzf.vim",
 	"tpope/vim-fugitive",
@@ -52,7 +51,7 @@ require("lsp")
 vim.wo.number = true
 vim.opt.termguicolors = true
 
-vim.cmd[[colorscheme ayu]]
+vim.cmd[[colorscheme ayu-light]]
 
 vim.keymap.set('n', '<leader>f', '<Cmd>:Files<CR>', {silent = true })
 vim.keymap.set('n', '<leader>l', '<Cmd>lua vim.lsp.buf.formatting()<CR>', {silent = true })

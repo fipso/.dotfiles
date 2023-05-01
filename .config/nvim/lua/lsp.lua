@@ -49,9 +49,7 @@ require("mason-null-ls").setup({
     handlers = {},
 })
 require("null-ls").setup({
-	sources = {
-
-	}
+	sources = {}
 })
 --require("mason-null-ls").setup_handlers()
 require("mason-lspconfig").setup()
