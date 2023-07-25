@@ -218,7 +218,7 @@ local tasklist_buttons = gears.table.join(
             -- You should read it from `/sys/class/power_supply/` (on Linux)
             -- instead of spawning a shell. This is only an example.
             awful.spawn.easy_async(
-                {"cat", "/sys/class/power_supply/BAT0/capacity"},
+                {"bash", "-c", "cat /sys/class/power_supply/BAT0/capacity 2&>/dev/null || echo 100"},
                 function(out)
                     mybatterybar.battery = out
                 end
@@ -707,7 +707,7 @@ local tasklist_buttons = gears.table.join(
         -- awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
         -- awful.spawn.with_shell("bash ~/.config/scripts/east_monitors.sh")
         awful.spawn.with_shell("setxkbmap eu")
-        awful.spawn.with_shell("bash ~/.config/scripts/laptop_monitors.sh")
+        awful.spawn.with_shell("bash ~/.config/scripts/monitors.sh")
         awful.spawn.with_shell("setxkbmap -option caps:escape")
         awful.spawn("nm-applet")
         --awful.spawn.with_shell("feh --bg-scale ~/Pictures/EldenRing.jpg")
