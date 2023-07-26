@@ -24,6 +24,7 @@ if status is-interactive
     alias c="cd"
     alias icat="kitty +kitten icat"
     alias kssh="kitty +kitten ssh"
+    alias s="TERM=xterm-256color ssh"
     set -gx EDITOR nvim
     set -gx TERMINAL /usr/bin/kitty
     set -gx PATH "$HOME/.cargo/bin" $PATH;
@@ -31,6 +32,8 @@ if status is-interactive
     set -gx PATH "$HOME/.config/scripts" $PATH;
     set -gx PATH "$HOME/.dotnet/tools" $PATH;
     set -gx PATH "$HOME/go/bin" $PATH;
+    set -gx PATH "$HOME/code/go-ethereum/build/bin" $PATH;
+    set -gx PATH "/home/fipso/.deno/bin" $PATH;
     set -gx NNN_PLUG "p:preview-tui"
     set -gx NNN_FIFO "/tmp/nnn.fifo"
     set -gx ANDROID_HOME "$HOME/Android/Sdk"
@@ -45,6 +48,8 @@ if status is-interactive
     set --universal nvm_default_version lts
 
     fish_vi_key_bindings
+
+    source (wmill completions fish | psub)
 end
 
 # bun

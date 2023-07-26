@@ -410,8 +410,8 @@ local tasklist_buttons = gears.table.join(
                 {description = "launch rofi calc menu", group="launcher"}),
             awful.key({ modkey    }, ".", function () awful.spawn("rofi -show emoji -modi emoji") end,
                 {description = "launch rofi emoji menu", group="launcher"}),
-            awful.key({ modkey    }, "d", function () awful.spawn("google-chrome-stable") end,
-                {description = "start chrome", group="launcher"}),
+            -- awful.key({ modkey    }, "d", function () awful.spawn("google-chrome-stable") end,
+            --     {description = "start chrome", group="launcher"}),
             -- Scratchpad
             --awful.key({modkey }, "s", function () term_scratch:toggle() end,
             --    {description = "toggle scratchpad", group="launcher"}),
