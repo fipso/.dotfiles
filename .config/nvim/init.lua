@@ -132,6 +132,7 @@ vim.o.shiftwidth = 2
 
 vim.cmd [[colorscheme ayu-mirage]]
 vim.cmd "hi Normal guibg=NONE ctermbg=NONE"
+vim.cmd "syntax sync fromstart"
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', builtin.find_files, { silent = true })
