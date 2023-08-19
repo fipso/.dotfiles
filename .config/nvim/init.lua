@@ -109,6 +109,14 @@ require("lazy").setup({
   }
 })
 
+require('nvim-treesitter.configs').setup({
+  ensure_installed = { 'astro', 'tsx', 'typescript', 'html', 'css', 'vue', 'go', 'python' },
+  auto_install = true,
+  highlight = {
+    enable = true
+  }
+})
+
 require("complete")
 require("lsp")
 
