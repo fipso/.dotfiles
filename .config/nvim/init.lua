@@ -94,18 +94,44 @@ require("lazy").setup({
     event = "InsertEnter",
     config = function()
       require("copilot").setup({
-        suggestion = { enabled = false },
+        suggestion = {
+          enabled = true,
+          auto_trigger = true,
+          keymap = {
+            accept = "<C-CR>";
+          }
+        },
         panel = { enabled = false },
       })
     end,
   },
   {
-    "zbirenbaum/copilot-cmp",
-    dependencies = { "copilot.lua" },
-    event = "InsertEnter",
+    "Bryley/neoai.nvim",
+    dependencies = {
+      "MunifTanjim/nui.nvim",
+    },
+    cmd = {
+      "NeoAI",
+      "NeoAIOpen",
+      "NeoAIClose",
+      "NeoAIToggle",
+      "NeoAIContext",
+      "NeoAIContextOpen",
+      "NeoAIContextClose",
+      "NeoAIInject",
+      "NeoAIInjectCode",
+      "NeoAIInjectContext",
+      "NeoAIInjectContextCode",
+    },
+    keys = {
+      { "<leader>as", desc = "summarize text" },
+      { "<leader>ag", desc = "generate git message" },
+    },
     config = function()
-      require("copilot_cmp").setup()
-    end
+      require("neoai").setup({
+        -- Options go here
+      })
+    end,
   }
 })
 
