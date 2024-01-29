@@ -47,8 +47,8 @@ require("lazy").setup({
       "hrsh7th/cmp-path",
       "hrsh7th/cmp-cmdline",
       "onsails/lspkind.nvim",
-      "L3MON4D3/LuaSnip",
       "saadparwaiz1/cmp_luasnip",
+      "L3MON4D3/LuaSnip"
     }
   },
   {
@@ -128,10 +128,26 @@ require("lazy").setup({
     },
     config = function()
       require("neoai").setup({
-        -- Options go here
+        models = {
+          name = "openai",
+          model = "gpt-4-32k",
+          params = nil,
+        }
       })
     end,
   }
+  -- {
+  --   "simrat39/symbols-outline.nvim",
+  --   config = function()
+  --     require("symbols-outline").setup({
+  --       highlight_hovered_item = true,
+  --       show_guides = true,
+  --       position = "bottom",
+  --       auto_preview = true,
+
+  --     })
+  --   end,
+  -- }
 })
 
 require('nvim-treesitter.configs').setup({

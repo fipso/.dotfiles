@@ -378,16 +378,16 @@ local tasklist_buttons = gears.table.join(
             --           end,
             --           {description = "move to screen on right", group = "screen"}),
 
-            awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
-                {description = "jump to urgent client", group = "client"}),
-            awful.key({ modkey,           }, "Tab",
-                function ()
-                    awful.client.focus.history.previous()
-                    if client.focus then
-                        client.focus:raise()
-                    end
-                end,
-                {description = "go back", group = "client"}),
+            -- awful.key({ modkey,           }, "u", awful.client.urgent.jumpto,
+            --     {description = "jump to urgent client", group = "client"}),
+            -- awful.key({ modkey,           }, "Tab",
+            --     function ()
+            --         awful.client.focus.history.previous()
+            --         if client.focus then
+            --             client.focus:raise()
+            --         end
+            --     end,
+            --     {description = "go back", group = "client"}),
 
             -- Standard program
             awful.key({ modkey,           }, "Return", function () awful.spawn(terminal) end,
@@ -404,14 +404,14 @@ local tasklist_buttons = gears.table.join(
                 {description = "start screen recording", group="launcher"}),
             awful.key({ modkey    }, "x", function () awful.spawn("rofi -show p -modi p:~/.config/scripts/rofi-power-menu.sh") end,
                 {description = "launch rofi power menu", group="launcher"}),
-            awful.key({ modkey    }, "a", function () awful.spawn.with_shell("bash ~/.config/scripts/audio.sh") end,
-                {description = "launch rofi audio menu", group="launcher"}),
-            awful.key({ modkey    }, "m", function () awful.spawn("rofi -show calc") end,
-                {description = "launch rofi calc menu", group="launcher"}),
+            -- awful.key({ modkey    }, "a", function () awful.spawn.with_shell("bash ~/.config/scripts/audio.sh") end,
+            --     {description = "launch rofi audio menu", group="launcher"}),
+            -- awful.key({ modkey    }, "m", function () awful.spawn("rofi -show calc") end,
+            --     {description = "launch rofi calc menu", group="launcher"}),
             awful.key({ modkey    }, ".", function () awful.spawn("rofi -show emoji -modi emoji") end,
                 {description = "launch rofi emoji menu", group="launcher"}),
-            awful.key({ modkey    }, "d", function () awful.spawn("google-chrome-stable") end,
-                {description = "start chrome", group="launcher"}),
+            -- awful.key({ modkey    }, "d", function () awful.spawn("google-chrome-stable") end,
+            --     {description = "start chrome", group="launcher"}),
             -- Scratchpad
             --awful.key({modkey }, "s", function () term_scratch:toggle() end,
             --    {description = "toggle scratchpad", group="launcher"}),
@@ -431,26 +431,26 @@ local tasklist_buttons = gears.table.join(
             -- awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1, nil, true)    end,
             --     {description = "decrease the number of columns", group = "layout"}),
             --
-            awful.key({ modkey,           }, "w", function () awful.layout.inc( 1)                end,
-                {description = "select next", group = "layout"}),
-            awful.key({ modkey, "Shift"   }, "w", function () awful.layout.inc(-1)                end,
-                {description = "select previous", group = "layout"}),
+            -- awful.key({ modkey,           }, "w", function () awful.layout.inc( 1)                end,
+            --     {description = "select next", group = "layout"}),
+            -- awful.key({ modkey, "Shift"   }, "w", function () awful.layout.inc(-1)                end,
+            --     {description = "select previous", group = "layout"}),
 
-            awful.key({ modkey, "Control" }, "n",
-            function ()
-            local c = awful.client.restore()
-            -- Focus restored client
-            if c then
-            c:emit_signal(
-            "request::activate", "key.unminimize", {raise = true}
-            )
-            end
-            end,
-            {description = "restore minimized", group = "client"}),
+            -- awful.key({ modkey, "Control" }, "n",
+            -- function ()
+            -- local c = awful.client.restore()
+            -- -- Focus restored client
+            -- if c then
+            -- c:emit_signal(
+            -- "request::activate", "key.unminimize", {raise = true}
+            -- )
+            -- end
+            -- end,
+            -- {description = "restore minimized", group = "client"}),
 
             -- Prompt
-            awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
-            {description = "run prompt", group = "launcher"}),
+            -- awful.key({ modkey },            "r",     function () awful.screen.focused().mypromptbox:run() end,
+            -- {description = "run prompt", group = "launcher"}),
 
             -- Media Keys
             awful.key({ }, "XF86AudioRaiseVolume", function () awful.spawn("pactl set-sink-volume @DEFAULT_SINK@ +5%", false) end),
@@ -458,10 +458,11 @@ local tasklist_buttons = gears.table.join(
             awful.key({ }, "XF86AudioPlay", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause", false) end),
             awful.key({ }, "XF86AudioStop", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Stop", false) end),
             awful.key({ }, "XF86AudioPrev", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous", false) end),
-            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end),
+            awful.key({ }, "XF86AudioNext", function () awful.spawn("dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify /org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next", false) end)
+            )
 
-            awful.key({ modkey, "Control" }, "n", function () awful.spawn("variety --next") end,
-            {description = "next wallpaper", group = "apperance"}))
+            -- awful.key({ modkey, "Control" }, "n", function () awful.spawn("variety --next") end,
+            -- {description = "next wallpaper", group = "apperance"}))
 
             clientkeys = gears.table.join(
             awful.key({ modkey,           }, "f",
@@ -477,35 +478,35 @@ local tasklist_buttons = gears.table.join(
             awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end,
             {description = "move to master", group = "client"}),
             awful.key({ modkey,           }, "o",      function (c) c:move_to_screen()               end,
-            {description = "move to screen", group = "client"}),
-            awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
-            {description = "toggle keep on top", group = "client"}),
-            awful.key({ modkey,           }, "n",
-            function (c)
-            -- The client currently has the input focus, so it cannot be
-            -- minimized, since minimized clients can't have the focus.
-            c.minimized = true
-            end ,
-            {description = "minimize", group = "client"}),
-
-            -- awful.key({ modkey,           }, "m",
+            {description = "move to screen", group = "client"})
+            -- awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end,
+            -- {description = "toggle keep on top", group = "client"}),
+            -- awful.key({ modkey,           }, "n",
             -- function (c)
-            -- c.maximized = not c.maximized
+            -- -- The client currently has the input focus, so it cannot be
+            -- -- minimized, since minimized clients can't have the focus.
+            -- c.minimized = true
+            -- end ,
+            -- {description = "minimize", group = "client"}),
+
+            -- -- awful.key({ modkey,           }, "m",
+            -- -- function (c)
+            -- -- c.maximized = not c.maximized
+            -- -- c:raise()
+            -- -- end ,
+            -- -- {description = "(un)maximize", group = "client"}),
+            -- awful.key({ modkey, "Control" }, "m",
+            -- function (c)
+            -- c.maximized_vertical = not c.maximized_vertical
             -- c:raise()
             -- end ,
-            -- {description = "(un)maximize", group = "client"}),
-            awful.key({ modkey, "Control" }, "m",
-            function (c)
-            c.maximized_vertical = not c.maximized_vertical
-            c:raise()
-            end ,
-            {description = "(un)maximize vertically", group = "client"}),
-            awful.key({ modkey, "Shift"   }, "m",
-            function (c)
-            c.maximized_horizontal = not c.maximized_horizontal
-            c:raise()
-            end ,
-            {description = "(un)maximize horizontally", group = "client"})
+            -- {description = "(un)maximize vertically", group = "client"}),
+            -- awful.key({ modkey, "Shift"   }, "m",
+            -- function (c)
+            -- c.maximized_horizontal = not c.maximized_horizontal
+            -- c:raise()
+            -- end ,
+            -- {description = "(un)maximize horizontally", group = "client"})
             )
 
         -- Bind all key numbers to tags.

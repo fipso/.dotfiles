@@ -31,6 +31,7 @@ if status is-interactive
     set -gx PATH "$HOME/.config/scripts" $PATH;
     set -gx PATH "$HOME/.dotnet/tools" $PATH;
     set -gx PATH "$HOME/go/bin" $PATH;
+    set -gx PATH "/opt/rocm/bin" $PATH;
     set -gx NNN_PLUG "p:preview-tui"
     set -gx NNN_FIFO "/tmp/nnn.fifo"
     set -gx ANDROID_HOME "$HOME/Android/Sdk"
