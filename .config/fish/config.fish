@@ -23,7 +23,7 @@ if status is-interactive
     alias b="bat"
     alias c="cd"
     alias icat="kitty +kitten icat"
-    alias kssh="kitty +kitten ssh"
+    alias dpsa="sudo docker ps -a | less -S"
     set -gx EDITOR nvim
     set -gx TERMINAL /usr/bin/kitty
     set -gx PATH "$HOME/.cargo/bin" $PATH;
@@ -44,6 +44,9 @@ if status is-interactive
 
     set -g fish_handle_reflow 0
     set --universal nvm_default_version lts
+
+    # Its a shame there is no reliable way to use ssh in kitty
+    set -gx TERM xterm-256color
 
     fish_vi_key_bindings
 end
