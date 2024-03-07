@@ -135,6 +135,32 @@ require("lazy").setup({
         }
       })
     end,
+  },
+  {
+    "codethread/qmk.nvim",
+    config = function()
+      ---@type qmk.UserConfig
+      local conf = {
+        name = 'LAYOUT_adv360',
+        variant = 'zmk',
+        auto_format_pattern = '*.keymap',
+        layout = {
+          'x x x x x x x _ _ _ _ _ _ _ _ _ x x x x x x x',
+          'x x x x x x x _ _ _ _ _ _ _ _ _ x x x x x x x',
+          'x x x x x x x _ _ _ x _ x _ _ _ x x x x x x x',
+          'x x x x x x _ _ _ x x _ x x _ _ _ x x x x x x',
+          'x x x x x _ _ _ x x x _ x x x _ _ _ x x x x x',
+        }
+      }
+      require('qmk').setup(conf)
+    end
+  },
+  {
+    "lervag/vimtex",
+    event = { "BufReadPre", "BufNewFile" },
+    config = function()
+      vim.g.vimtex_view_method = 'zathura'
+    end
   }
   -- {
   --   "simrat39/symbols-outline.nvim",
@@ -166,7 +192,8 @@ require("nvim-tree").setup()
 vim.wo.number = true
 vim.opt.termguicolors = true
 vim.opt.clipboard = 'unnamedplus'
-vim.opt.spelllang = 'en-gb'
+vim.opt.spelllang = 'en_gb'
+vim.opt.spell = true
 vim.o.mouse = 'a'
 vim.o.splitbelow = true
 vim.o.splitright = true
