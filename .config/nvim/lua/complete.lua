@@ -3,6 +3,9 @@ local cmp = require 'cmp'
 local lspkind = require 'lspkind'
 
 cmp.setup({
+  experimental = {
+    ghost_text = true,
+  },
   formatting = {
     format = lspkind.cmp_format({
       mode = 'symbol_text',
@@ -34,8 +37,10 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace }),
   }),
   sources = cmp.config.sources({
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
-    { name = "copilot" },
+    { name = 'path' },
+    { name = 'luasnip'},
   }, {
     { name = 'buffer' },
   })

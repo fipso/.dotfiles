@@ -94,45 +94,13 @@ require("lazy").setup({
     config = function()
       require("copilot").setup({
         suggestion = {
-          enabled = true,
+          enabled = false,
           auto_trigger = true,
           keymap = {
             accept = "<C-CR>";
           }
         },
         panel = { enabled = false },
-      })
-    end,
-  },
-  {
-    "Bryley/neoai.nvim",
-    dependencies = {
-      "MunifTanjim/nui.nvim",
-    },
-    cmd = {
-      "NeoAI",
-      "NeoAIOpen",
-      "NeoAIClose",
-      "NeoAIToggle",
-      "NeoAIContext",
-      "NeoAIContextOpen",
-      "NeoAIContextClose",
-      "NeoAIInject",
-      "NeoAIInjectCode",
-      "NeoAIInjectContext",
-      "NeoAIInjectContextCode",
-    },
-    keys = {
-      { "<leader>as", desc = "summarize text" },
-      { "<leader>ag", desc = "generate git message" },
-    },
-    config = function()
-      require("neoai").setup({
-        models = {
-          name = "openai",
-          model = "gpt-4-32k",
-          params = nil,
-        }
       })
     end,
   },
@@ -160,6 +128,13 @@ require("lazy").setup({
     event = { "BufReadPre", "BufNewFile" },
     config = function()
       vim.g.vimtex_view_method = 'zathura'
+    end
+  },
+  { 'wakatime/vim-wakatime', lazy = false },
+  {
+    "zbirenbaum/copilot-cmp",
+    config = function ()
+      require("copilot_cmp").setup()
     end
   }
   -- {

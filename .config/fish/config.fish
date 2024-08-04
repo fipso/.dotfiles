@@ -20,7 +20,7 @@ if status is-interactive
     alias ta="tmux a"
     alias config="/usr/bin/git --git-dir=$HOME/.cfg/.git/ --work-tree=$HOME"
     alias wttr="curl wttr.in/haan"
-    alias cat="bat"
+    alias cat="bat -p -P"
     alias b="bat"
     alias c="cd"
     alias icat="kitty +kitten icat"
@@ -46,8 +46,10 @@ if status is-interactive
     set -g fish_handle_reflow 0
     set --universal nvm_default_version lts
 
+    alias kssh="kitten ssh"
+
     # Its a shame there is no reliable way to use ssh in kitty
-    set -gx TERM xterm-256color
+    # set -gx TERM xterm-256color
 
     fish_vi_key_bindings
 
