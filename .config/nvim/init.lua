@@ -136,6 +136,48 @@ require("lazy").setup({
     config = function ()
       require("copilot_cmp").setup()
     end
+  },
+  {
+    "mfussenegger/nvim-dap"
+  },
+  { 
+    "rcarriga/nvim-dap-ui",
+    dependencies = {"mfussenegger/nvim-dap", "nvim-neotest/nvim-nio"},
+    config = function()
+      require("dapui").setup()
+    end
+  },
+  {
+    "theHamsta/nvim-dap-virtual-text",
+    config = function()
+      require("nvim-dap-virtual-text").setup()
+    end
+  },
+  {
+    "mxsdev/nvim-dap-vscode-js",
+    config = function()
+      require("dap-vscode-js").setup({
+        adapters = { 'pwa-node', 'pwa-chrome', 'pwa-msedge', 'node-terminal', 'pwa-extensionHost' },
+        debugger_path = "/home/fipso/code/vscode-js-debug"
+      })
+
+      require("dap").configurations["javascript"] = {
+        {
+          type = "pwa-node",
+          request = "launch",
+          name = "Launch file",
+          program = "${file}",
+          cwd = "${workspaceFolder}",
+        },
+        {
+          type = "pwa-node",
+          request = "attach",
+          name = "Attach",
+          processId = require'dap.utils'.pick_process,
+          cwd = "${workspaceFolder}",
+        }
+      }
+    end 
   }
   -- {
   --   "simrat39/symbols-outline.nvim",
@@ -188,7 +230,7 @@ vim.cmd "syntax sync fromstart"
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', builtin.find_files, { silent = true })
 vim.keymap.set('n', '<leader>g', builtin.live_grep, { silent = true })
-vim.keymap.set('n', '<leader>l', '<Cmd>lua vim.lsp.buf.formatting()<CR>', { silent = true })
+vim.keymap.set('n', '<leader>l', "<Cmd>:lua vim.lsp.buf.formatting()<CR>", { silent = true })
 vim.keymap.set('n', '<leader>n', '<Cmd>:NvimTreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<leader>c', '<Cmd>:e ~/.config/nvim/<CR>', { silent = true })
@@ -197,3 +239,8 @@ vim.keymap.set('n', '<C-H>', '<C-W><C-H>', { silent = true })
 vim.keymap.set('n', '<C-J>', '<C-W><C-J>', { silent = true })
 vim.keymap.set('n', '<C-K>', '<C-W><C-K>', { silent = true })
 vim.keymap.set('n', '<C-L>', '<C-W><C-L>', { silent = true })
+
+vim.keymap.set('n', '<leader>b', require'dap'.toggle_breakpoint, { silent = true })
+vim.keymap.set('n', '<leader>e', require'dap'.continue, { silent = true })
+vim.keymap.set('n', '<leader>s', require'dap'.step_into, { silent = true })
+vim.keymap.set('n', '<leader>d', require'dapui'.toggle, { silent = true })
