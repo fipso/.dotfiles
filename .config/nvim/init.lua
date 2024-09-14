@@ -56,6 +56,28 @@ require("lazy").setup({
     build = ":TSUpdate",
     event = { "BufReadPre", "BufNewFile" }
   },
+ {
+    "folke/lazydev.nvim",
+    ft = "lua", -- only load on lua files
+    opts = {
+      library = {
+        -- See the configuration section for more details
+        -- Load luvit types when the `vim.uv` word is found
+        { path = "luvit-meta/library", words = { "vim%.uv" } },
+      },
+    },
+  },
+  { "Bilal2453/luvit-meta", lazy = true }, -- optional `vim.uv` typings
+  { -- optional completion source for require statements and module annotations
+    "hrsh7th/nvim-cmp",
+    opts = function(_, opts)
+      opts.sources = opts.sources or {}
+      table.insert(opts.sources, {
+        name = "lazydev",
+        group_index = 0, -- set group index to 0 to skip loading LuaLS completions
+      })
+    end,
+  },
   {
     "folke/tokyonight.nvim",
     lazy = true
@@ -87,23 +109,23 @@ require("lazy").setup({
     "folke/trouble.nvim",
     event = "VeryLazy"
   },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        suggestion = {
-          enabled = false,
-          auto_trigger = true,
-          keymap = {
-            accept = "<C-CR>";
-          }
-        },
-        panel = { enabled = false },
-      })
-    end,
-  },
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({
+  --       suggestion = {
+  --         enabled = false,
+  --         auto_trigger = true,
+  --         keymap = {
+  --           accept = "<C-CR>";
+  --         }
+  --       },
+  --       panel = { enabled = false },
+  --     })
+  --   end,
+  -- },
   {
     "codethread/qmk.nvim",
     config = function()
@@ -131,12 +153,12 @@ require("lazy").setup({
     end
   },
   { 'wakatime/vim-wakatime', lazy = false },
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function ()
-      require("copilot_cmp").setup()
-    end
-  },
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   config = function ()
+  --     require("copilot_cmp").setup()
+  --   end
+  -- },
   {
     "mfussenegger/nvim-dap"
   },
@@ -146,6 +168,9 @@ require("lazy").setup({
     config = function()
       require("dapui").setup()
     end
+  },
+  {
+    "leoluz/nvim-dap-go"
   },
   {
     "theHamsta/nvim-dap-virtual-text",
@@ -205,6 +230,8 @@ require("lazy").setup({
         debugger_path = "/home/fipso/code/vscode-js-debug"
       })
 
+      require("dap-go").setup()
+
       require("dap").configurations["javascript"] = {
         {
           type = "pwa-node",
@@ -222,7 +249,17 @@ require("lazy").setup({
         }
       }
     end 
-  }
+  },
+  {
+    'topaxi/gh-actions.nvim',
+    keys = {
+      { '<leader>gh', '<cmd>GhActions<cr>', desc = 'Open Github Actions' },
+    },
+    -- optional, you can also install and use `yq` instead.
+    -- build = 'make',
+    ---@type GhActionsConfig
+    opts = {},
+  },
   -- {
   --   "simrat39/symbols-outline.nvim",
   --   config = function()
@@ -286,5 +323,8 @@ vim.keymap.set('n', '<C-L>', '<C-W><C-L>', { silent = true })
 
 vim.keymap.set('n', '<leader>b', require'dap'.toggle_breakpoint, { silent = true })
 vim.keymap.set('n', '<leader>e', require'dap'.continue, { silent = true })
-vim.keymap.set('n', '<leader>s', require'dap'.step_into, { silent = true })
+vim.keymap.set('n', '<C-S>', require'dap'.step_over, { silent = true })
+vim.keymap.set('n', '<S-S>', require'dap'.step_into, { silent = true })
 vim.keymap.set('n', '<leader>d', require'dapui'.toggle, { silent = true })
+
+
