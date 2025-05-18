@@ -268,7 +268,8 @@ require("lazy").setup({
         auto_apply_diff_after_generation = false
       },
       claude = {
-        timeout = 0
+        timeout = 0,
+        disable_tools = true,
         --model = "claude-3-7-sonnet-20250219",
       },
     },
@@ -484,7 +485,7 @@ vim.cmd [[colorscheme oxocarbon]]
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', builtin.find_files, { silent = true })
 vim.keymap.set('n', '<leader>g', builtin.live_grep, { silent = true })
-vim.keymap.set('n', '<leader>l', "<Cmd>:lua vim.lsp.buf.formatting()<CR>", { silent = true })
+vim.keymap.set('n', '<leader>l', "<Cmd>:lua vim.lsp.buf.format()<CR>", { silent = true })
 vim.keymap.set('n', '<leader>n', '<Cmd>:NvimTreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<leader>c', '<Cmd>:e ~/.config/nvim/<CR>', { silent = true })
@@ -504,3 +505,23 @@ vim.api.nvim_set_hl(0, "DiffAdd", {bg = "#20303b"})
 vim.api.nvim_set_hl(0, "DiffDelete", {bg = "#37222c"})
 vim.api.nvim_set_hl(0, "DiffChange", {bg = "#1f2231"})
 vim.api.nvim_set_hl(0, "DiffText", {bg = "#394b70"})
+
+vim.api.nvim_create_autocmd('BufRead', {
+  callback = function(opts)
+    vim.api.nvim_create_autocmd('BufWinEnter', {
+      once = true,
+      buffer = opts.buf,
+      callback = function()
+        local ft = vim.bo[opts.buf].filetype
+        local last_known_line = vim.api.nvim_buf_get_mark(opts.buf, '"')[1]
+        if
+          not (ft:match('commit') and ft:match('rebase'))
+          and last_known_line > 1
+          and last_known_line <= vim.api.nvim_buf_line_count(opts.buf)
+        then
+          vim.api.nvim_feedkeys([[g`"]], 'nx', false)
+        end
+      end,
+    })
+  end,
+})
