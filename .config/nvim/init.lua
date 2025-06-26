@@ -466,7 +466,7 @@ require("nvim-tree").setup({
   end,
   git = {
     enable = true,
-    ignore = false,
+    ignore = true,
     timeout = 400,
   },
   view = {
