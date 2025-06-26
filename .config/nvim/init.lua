@@ -16,74 +16,74 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
 require("lazy").setup({
- {
-    'seblyng/roslyn.nvim',
-    ft = { 'cs', 'razor' },
-    dependencies = {
-      {
-        -- By loading as a dependencies, we ensure that we are available to set
-        -- the handlers for roslyn
-        'tris203/rzls.nvim',
-        config = function()
-          ---@diagnostic disable-next-line: missing-fields
-          require('rzls').setup {}
-        end,
-      },
-    },
-    config = function()
-      require('roslyn').setup {
-        args = {
-          '--stdio',
-          '--logLevel=Information',
-          '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
-          '--razorSourceGenerator='
-            .. vim.fs.joinpath(vim.fn.stdpath 'data' --[[@as string]], 'mason', 'packages', 'roslyn', 'libexec', 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
-          '--razorDesignTimePath=' .. vim.fs.joinpath(
-            vim.fn.stdpath 'data' --[[@as string]],
-            'mason',
-            'packages',
-            'rzls',
-            'libexec',
-            'Targets',
-            'Microsoft.NET.Sdk.Razor.DesignTime.targets'
-          ),
-        },
-        ---@diagnostic disable-next-line: missing-fields
-        config = {
-          handlers = require 'rzls.roslyn_handlers',
-          settings = {
-            ['csharp|inlay_hints'] = {
-              csharp_enable_inlay_hints_for_implicit_object_creation = true,
-              csharp_enable_inlay_hints_for_implicit_variable_types = true,
+  -- {
+    --'seblyng/roslyn.nvim',
+    --ft = { 'cs', 'razor' },
+    --dependencies = {
+    --  {
+    --    -- By loading as a dependencies, we ensure that we are available to set
+    --    -- the handlers for roslyn
+    --    'tris203/rzls.nvim',
+    --    config = function()
+    --      ---@diagnostic disable-next-line: missing-fields
+    --      require('rzls').setup {}
+    --    end,
+    --  },
+    --},
+    --config = function()
+    --  require('roslyn').setup {
+    --    args = {
+    --      '--stdio',
+    --      '--logLevel=Information',
+    --      '--extensionLogDirectory=' .. vim.fs.dirname(vim.lsp.get_log_path()),
+    --      '--razorSourceGenerator='
+    --        .. vim.fs.joinpath(vim.fn.stdpath 'data' --[[@as string]], 'mason', 'packages', 'roslyn', 'libexec', 'Microsoft.CodeAnalysis.Razor.Compiler.dll'),
+    --      '--razorDesignTimePath=' .. vim.fs.joinpath(
+    --        vim.fn.stdpath 'data' --[[@as string]],
+    --        'mason',
+    --        'packages',
+    --        'rzls',
+    --        'libexec',
+    --        'Targets',
+    --        'Microsoft.NET.Sdk.Razor.DesignTime.targets'
+    --      ),
+    --    },
+    --    ---@diagnostic disable-next-line: missing-fields
+    --    config = {
+    --      handlers = require 'rzls.roslyn_handlers',
+    --      settings = {
+    --        ['csharp|inlay_hints'] = {
+    --          csharp_enable_inlay_hints_for_implicit_object_creation = true,
+    --          csharp_enable_inlay_hints_for_implicit_variable_types = true,
 
-              csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-              csharp_enable_inlay_hints_for_types = true,
-              dotnet_enable_inlay_hints_for_indexer_parameters = true,
-              dotnet_enable_inlay_hints_for_literal_parameters = true,
-              dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-              dotnet_enable_inlay_hints_for_other_parameters = true,
-              dotnet_enable_inlay_hints_for_parameters = true,
-              dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-              dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-              dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-            },
-            ['csharp|code_lens'] = {
-              dotnet_enable_references_code_lens = true,
-            },
-          },
-        },
-      }
-    end,
-    init = function()
-      -- we add the razor filetypes before the plugin loads
-      vim.filetype.add {
-        extension = {
-          razor = 'razor',
-          cshtml = 'razor',
-        },
-      }
-    end,
-  },
+    --          csharp_enable_inlay_hints_for_lambda_parameter_types = true,
+    --          csharp_enable_inlay_hints_for_types = true,
+    --          dotnet_enable_inlay_hints_for_indexer_parameters = true,
+    --          dotnet_enable_inlay_hints_for_literal_parameters = true,
+    --          dotnet_enable_inlay_hints_for_object_creation_parameters = true,
+    --          dotnet_enable_inlay_hints_for_other_parameters = true,
+    --          dotnet_enable_inlay_hints_for_parameters = true,
+    --          dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
+    --          dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
+    --          dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
+    --        },
+    --        ['csharp|code_lens'] = {
+    --          dotnet_enable_references_code_lens = true,
+    --        },
+    --      },
+    --    },
+    --  }
+    --end,
+    --init = function()
+    --  -- we add the razor filetypes before the plugin loads
+    --  vim.filetype.add {
+    --    extension = {
+    --      razor = 'razor',
+    --      cshtml = 'razor',
+    --    },
+    --  }
+    --end,
+  --},
   { "ellisonleao/gruvbox.nvim", priority = 1000 , config = true, opts = ...},
   "nvim-lua/plenary.nvim",
   {
@@ -93,20 +93,20 @@ require("lazy").setup({
     config = function()
       require("mason").setup({
         registries = {
-            'github:mason-org/mason-registry',
-            'github:Crashdummyy/mason-registry'
+           'github:mason-org/mason-registry'
+           -- 'github:Crashdummyy/mason-registry'
         }
       })
     end,
   },
-  {
-    "williamboman/mason-lspconfig.nvim",
-    event = { "BufReadPre", "BufNewFile" }
-  },
-  {
-    "neovim/nvim-lspconfig",
-    event = { "BufReadPre", "BufNewFile" }
-  },
+  -- {
+  --   "williamboman/mason-lspconfig.nvim",
+  --   event = { "BufReadPre", "BufNewFile" }
+  -- },
+  -- {
+  --   "neovim/nvim-lspconfig",
+  --   event = { "BufReadPre", "BufNewFile" }
+  -- },
   {
     "jay-babu/mason-null-ls.nvim",
     event = { "BufReadPre", "BufNewFile" },
@@ -203,32 +203,32 @@ require("lazy").setup({
       })
     end,
   },
-  {
-    "codethread/qmk.nvim",
-    config = function()
-      ---@type qmk.UserConfig
-      local conf = {
-        name = 'LAYOUT_adv360',
-        variant = 'zmk',
-        auto_format_pattern = '*.keymap',
-        layout = {
-          'x x x x x x x _ _ _ _ _ _ _ _ _ _ x x x x x x x',
-          'x x x x x x x _ _ _ _ _ _ _ _ _ _ x x x x x x x',
-          'x x x x x x x _ _ x x x x x x _ _ x x x x x x x',
-          'x x x x x x _ _ _ x x x x x x _ _ _ x x x x x x',
-          'x x x x x _ _ _ _ x x x x x x _ _ _ _ x x x x x',
-        }
-      }
-      require('qmk').setup(conf)
-    end
-  },
-  {
-    "lervag/vimtex",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      vim.g.vimtex_view_method = 'zathura'
-    end
-  },
+  --{
+  --  "codethread/qmk.nvim",
+  --  config = function()
+  --    ---@type qmk.UserConfig
+  --    local conf = {
+  --      name = 'LAYOUT_adv360',
+  --      variant = 'zmk',
+  --      auto_format_pattern = '*.keymap',
+  --      layout = {
+  --        'x x x x x x x _ _ _ _ _ _ _ _ _ _ x x x x x x x',
+  --        'x x x x x x x _ _ _ _ _ _ _ _ _ _ x x x x x x x',
+  --        'x x x x x x x _ _ x x x x x x _ _ x x x x x x x',
+  --        'x x x x x x _ _ _ x x x x x x _ _ _ x x x x x x',
+  --        'x x x x x _ _ _ _ x x x x x x _ _ _ _ x x x x x',
+  --      }
+  --    }
+  --    require('qmk').setup(conf)
+  --  end
+  --},
+  -- {
+  --   "lervag/vimtex",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   config = function()
+  --     vim.g.vimtex_view_method = 'zathura'
+  --   end
+  -- },
   { 'wakatime/vim-wakatime', lazy = false },
   {
     "zbirenbaum/copilot-cmp",
@@ -419,13 +419,13 @@ require("lazy").setup({
       require"gitsigns".setup()
     end
   },
-  {
-    "goolord/alpha-nvim",
-    dependencies = { "echasnovski/mini.icons" },
-    config = function ()
-        require"alpha".setup(require"alpha.themes.startify".config)
-    end
-  },
+  -- {
+  --   "goolord/alpha-nvim",
+  --   dependencies = { "echasnovski/mini.icons" },
+  --   config = function ()
+  --       require"alpha".setup(require"alpha.themes.startify".config)
+  --   end
+  -- },
   -- {
   --   "simrat39/symbols-outline.nvim",
   --   config = function()
@@ -453,8 +453,41 @@ require('nvim-treesitter.configs').setup({
 
 require("complete")
 require("lsp")
-
-require("nvim-tree").setup()
+require("nvim-tree").setup({
+  on_attach = function(bufnr)
+    local api = require('nvim-tree.api')
+    
+    local function opts(desc)
+      return { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+    end
+    
+    -- Default mappings
+    api.config.mappings.default_on_attach(bufnr)
+  end,
+  git = {
+    enable = true,
+    ignore = false,
+    timeout = 400,
+  },
+  view = {
+    width = 30,
+    side = "left",
+  },
+  renderer = {
+    highlight_git = true,
+    icons = {
+      show = {
+        git = true,
+      },
+    },
+  },
+  actions = {
+    change_dir = {
+      enable = true,
+      global = false,
+    },
+  },
+})
 
 vim.wo.number = true
 vim.opt.termguicolors = true
