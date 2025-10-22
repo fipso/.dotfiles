@@ -49,14 +49,15 @@ local required_servers = {
   "html-lsp",
   "css-lsp",
   "dockerfile-language-server",
-  "lua-language-server"
+  "lua-language-server",
+  "clangd"
 }
 
 local function ensure_installed(servers)
   for _, server in ipairs(servers) do
     local p = mason_registry.get_package(server)
     if not p:is_installed() then
-      vim.notify("Installing " .. server .. "...", vim.log.levels.INFO)
+      -- vim.notify("Installing " .. server .. "...", vim.log.levels.INFO)
       p:install()
     end
   end
@@ -158,7 +159,7 @@ vim.lsp.config('vue_ls', {
     client.handlers['tsserver/request'] = function(_, result, context)
       local clients = vim.lsp.get_clients({ bufnr = context.bufnr, name = 'vtsls' })
       if #clients == 0 then
-        vim.notify('Could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.ERROR)
+        -- vim.notify('Could not found `vtsls` lsp client, vue_lsp would not work without it.', vim.log.levels.ERROR)
         return
       end
       local ts_client = clients[1]
@@ -172,8 +173,10 @@ vim.lsp.config('vue_ls', {
           payload,
         },
       }, { bufnr = context.bufnr }, function(_, r)
-          local response_data = { { id, r.body } }
-          client:notify('tsserver/response', response_data)
+          if r and r.body then
+            local response_data = { { id, r.body } }
+            client:notify('tsserver/response', response_data)
+          end
         end)
     end
   end,
@@ -277,6 +280,21 @@ vim.lsp.config('lua_ls', {
   },
 })
 
+vim.lsp.config('clangd', {
+  cmd = { 'clangd', '--background-index' },
+  filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
+  --root_dir = vim.lsp.util.root_pattern('compile_commands.json', 'compile_flags.txt', '.git'),
+  settings = {
+    clangd = {
+      semanticHighlighting = true,
+      diagnostics = {
+        enable = true,
+        clazy = true,
+      },
+    },
+  },
+})
+
 -- Enable all configured LSP servers
 vim.lsp.enable({
   'gopls',
@@ -287,5 +305,6 @@ vim.lsp.enable({
   'html',
   'cssls',
   'dockerls',
-  'lua_ls'
+  'lua_ls',
+  'clangd'
 })
