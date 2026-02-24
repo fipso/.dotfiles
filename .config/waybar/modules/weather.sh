@@ -1,5 +1,3 @@
-#!/bin/bash
-
 cachedir=~/.cache/rbn
 cachefile=${0##*/}-$1
 

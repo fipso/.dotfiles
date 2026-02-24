@@ -441,7 +441,8 @@ require("lazy").setup({
   -- }
   {
     "nyoom-engineering/oxocarbon.nvim"
-  }
+  },
+  { "blazkowolf/gruber-darker.nvim" }
 })
 
 require('nvim-treesitter.configs').setup({
@@ -509,7 +510,8 @@ vim.o.shiftwidth = 2
 vim.opt.laststatus = 3
 
 vim.opt.background = "dark"
-vim.cmd [[colorscheme oxocarbon]]
+--vim.cmd [[colorscheme oxocarbon]]
+vim.cmd [[colorscheme gruber-darker]]
 
 --vim.cmd [[colorscheme gruvbox]]
 --vim.cmd "hi Normal guibg=NONE ctermbg=NONE"

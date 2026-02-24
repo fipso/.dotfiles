@@ -1,5 +1,6 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
+    keychain --eval --quiet id_ed25519 | source
 
     #if not set -q TMUX
     #    set -g TMUX tmux new-session -d -s base
@@ -25,7 +26,7 @@ if status is-interactive
     alias c="cd"
     #alias icat="kitty +kitten icat"
     alias dpsa="sudo docker ps -a | less -S"
-    alias ssh="TERM=xterm-256color /usr/bin/ssh"
+    #alias ssh="TERM=xterm-256color /usr/bin/ssh"
     set -gx EDITOR nvim
     set -gx TERMINAL ghostty
     set -gx PATH "$HOME/.cargo/bin" $PATH;
