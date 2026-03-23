@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MODE="${1:-mp4}" # mp4 or gif
+TMPDIR="${TMPDIR:-/tmp}"
+PID_FILE="$TMPDIR/record.pid"
+RAW_FILE="$TMPDIR/record_raw.mp4"
+OUT_GIF="$TMPDIR/record.gif"
+OUT_MP4="$TMPDIR/record.mp4"
+
+# If already recording, stop it
+if [ -f "$PID_FILE" ]; then
+    PID="$(cat "$PID_FILE")"
+    kill -INT "$PID" 2>/dev/null || true
+    # Wait for wl-screenrec to finalize the file
+    tail --pid="$PID" -f /dev/null 2>/dev/null
+    rm -f "$PID_FILE"
+    hyprctl notify 1 3000 0 "Recording: Processing..."
+
+    MODE_FILE="$TMPDIR/record.mode"
+    MODE="$(cat "$MODE_FILE" 2>/dev/null || echo mp4)"
+
+    if [ "$MODE" = "gif" ]; then
+        # Convert to gif with decent quality palette
+        ffmpeg -y -i "$RAW_FILE" \
+            -vf "fps=15,scale=-1:-1:flags=lanczos,split[s0][s1];[s0]palettegen=max_colors=128[p];[s1][p]paletteuse=dither=bayer" \
+            "$OUT_GIF"
+        wl-copy -t image/gif < "$OUT_GIF"
+        hyprctl notify 1 3000 0 "Recording: GIF copied to clipboard"
+    else
+        # Copy mp4 to clipboard
+        cp "$RAW_FILE" "$OUT_MP4"
+        wl-copy -t video/mp4 < "$OUT_MP4"
+        hyprctl notify 1 3000 0 "Recording: MP4 copied to clipboard"
+    fi
+
+    rm -f "$RAW_FILE" "$MODE_FILE"
+    exit 0
+fi
+
+# Select region
+GEOMETRY="$(slurp)" || exit 1
+
+# Save mode for stop phase
+echo "$MODE" > "$TMPDIR/record.mode"
+
+if [ "$MODE" = "gif" ]; then
+    wl-screenrec --encode-pixfmt nv12 -g "$GEOMETRY" -f "$RAW_FILE" &
+else
+    wl-screenrec --encode-pixfmt nv12 -g "$GEOMETRY" -f "$RAW_FILE" --audio &
+fi
+
+echo $! > "$PID_FILE"
+hyprctl notify 1 3000 0 "Recording: Started ($MODE) — run again to stop"

@@ -525,6 +525,7 @@ vim.keymap.set('n', '<leader>l', "<Cmd>:lua vim.lsp.buf.format()<CR>", { silent 
 vim.keymap.set('n', '<leader>n', '<Cmd>:NvimTreeToggle<CR>', { silent = true })
 
 vim.keymap.set('n', '<leader>c', '<Cmd>:e ~/.config/nvim/<CR>', { silent = true })
+vim.keymap.set('n', '<leader>nc', '<Cmd>:e ~/nix/nixos/home.nix<CR>', { silent = true })
 
 vim.keymap.set('n', '<C-H>', '<C-W><C-H>', { silent = true })
 vim.keymap.set('n', '<C-J>', '<C-W><C-J>', { silent = true })

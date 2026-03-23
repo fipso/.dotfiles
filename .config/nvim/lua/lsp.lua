@@ -49,7 +49,7 @@ local required_servers = {
   "html-lsp",
   "css-lsp",
   "dockerfile-language-server",
-  "lua-language-server",
+  -- "lua-language-server",  -- installed via Nix (Mason binary doesn't work on NixOS)
   "clangd"
 }
 

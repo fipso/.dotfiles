@@ -1,6 +1,6 @@
 if status is-interactive
     # Commands to run in interactive sessions can go here
-    keychain --eval --quiet id_ed25519 | source
+    keychain --eval --quiet id_ed25519 2>/dev/null | string replace -r '(\w+)="?([^";]*)"?;.*' 'set -gx $1 $2' | source
 
     #if not set -q TMUX
     #    set -g TMUX tmux new-session -d -s base
@@ -60,6 +60,9 @@ if status is-interactive
     #fish_vi_key_bindings
     #pyenv init - | source
 end
+
+# nix-ld libraries (for uv-installed tools like voicemode)
+set -gx LD_LIBRARY_PATH /run/current-system/sw/share/nix-ld/lib $LD_LIBRARY_PATH
 
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
