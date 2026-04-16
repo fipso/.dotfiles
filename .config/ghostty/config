@@ -71,3 +71,5 @@ keybind = alt+v=paste_from_clipboard
 gtk-custom-css = tab-style.css
 # gtk-tabs-location = bottom
 keybind = shift+enter=text:\n
+
+gtk-single-instance = true
