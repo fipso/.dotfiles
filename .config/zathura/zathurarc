@@ -1,0 +1,9 @@
+# Render ahead more pages for smoother scrolling
+set page-cache-size 30
+
+# Higher render threads
+set threads 4
+
+# Render quality - higher means sharper but slower initial render
+# 150 is a good balance on HiDPI
+set render-loading false
