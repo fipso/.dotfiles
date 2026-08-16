@@ -6,6 +6,12 @@ cmp.setup({
   experimental = {
     ghost_text = true,
   },
+  performance = {
+    -- This is a *max* wait for pending sources, not a fixed delay. The local sources
+    -- used while typing answer in ~1ms, so this never costs anything there. It only
+    -- applies on <C-Space>, where we do want to wait for the LLM round-trip.
+    fetching_timeout = 2000,
+  },
   formatting = {
     format = lspkind.cmp_format({
       mode = 'symbol_text',
@@ -32,12 +38,31 @@ cmp.setup({
   mapping = cmp.mapping.preset.insert({
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
+    -- The only thing that ever reaches the network. Typing uses the local-only
+    -- source list below; this overrides it for one invocation to add the LLM
+    -- sources. minuet fires even with enable_auto_complete=false because
+    -- cmp.mapping.complete() marks the request reason as 'manual'.
+    ['<C-Space>'] = cmp.mapping.complete({
+      config = {
+        sources = cmp.config.sources({
+          { name = 'minuet' },
+          -- { name = 'copilot' },  -- copilot plugins are commented out in init.lua
+          { name = 'nvim_lsp' },
+          { name = 'path' },
+          { name = 'luasnip' },
+        }, {
+          { name = 'buffer' },
+        }),
+      },
+    }),
+    ['<A-y>'] = require('minuet').make_cmp_map(),
     ['<C-e>'] = cmp.mapping.abort(),
     ['<CR>'] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace }),
   }),
+  -- minuet and copilot are deliberately NOT here: as automatic sources they fired a
+  -- network round-trip on every completion trigger. Reach them on demand instead --
+  -- <A-y> for minuet, <A-c> for copilot (both mapped above).
   sources = cmp.config.sources({
-    { name = 'copilot' },
     { name = 'nvim_lsp' },
     { name = 'path' },
     { name = 'luasnip'},

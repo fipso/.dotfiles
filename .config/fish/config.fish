@@ -64,6 +64,10 @@ end
 # nix-ld libraries (for uv-installed tools like voicemode)
 set -gx LD_LIBRARY_PATH /run/current-system/sw/share/nix-ld/lib $LD_LIBRARY_PATH
 
+# Use Nix protoc + grpc plugin for Grpc.Tools (bundled NuGet binaries fail on NixOS)
+set -gx PROTOBUF_PROTOC (command -v protoc)
+set -gx GRPC_PROTOC_PLUGIN (command -v grpc_csharp_plugin)
+
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH

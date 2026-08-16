@@ -126,23 +126,25 @@ require("lazy").setup({
     "folke/trouble.nvim",
     event = "VeryLazy"
   },
-  {
-    "zbirenbaum/copilot.lua",
-    cmd = "Copilot",
-    event = "InsertEnter",
-    config = function()
-      require("copilot").setup({
-        suggestion = {
-          enabled = false,
-          auto_trigger = true,
-          keymap = {
-            accept = "<C-CR>";
-          }
-        },
-        panel = { enabled = false },
-      })
-    end,
-  },
+  -- Not in use right now. Re-enable together with the copilot-cmp block below and
+  -- the { name = 'copilot' } source in complete.lua.
+  -- {
+  --   "zbirenbaum/copilot.lua",
+  --   cmd = "Copilot",
+  --   event = "InsertEnter",
+  --   config = function()
+  --     require("copilot").setup({
+  --       suggestion = {
+  --         enabled = false,
+  --         auto_trigger = true,
+  --         keymap = {
+  --           accept = "<C-CR>";
+  --         }
+  --       },
+  --       panel = { enabled = false },
+  --     })
+  --   end,
+  -- },
   --{
   --  "codethread/qmk.nvim",
   --  config = function()
@@ -170,12 +172,13 @@ require("lazy").setup({
   --   end
   -- },
   { 'wakatime/vim-wakatime', lazy = false },
-  {
-    "zbirenbaum/copilot-cmp",
-    config = function ()
-      require("copilot_cmp").setup()
-    end
-  },
+  -- Not in use right now -- see the copilot.lua block above.
+  -- {
+  --   "zbirenbaum/copilot-cmp",
+  --   config = function ()
+  --     require("copilot_cmp").setup()
+  --   end
+  -- },
   {
     "mfussenegger/nvim-dap"
   },
@@ -349,7 +352,13 @@ require("lazy").setup({
     },
   },
   {
-    "nvim-treesitter/nvim-treesitter-context"
+    "nvim-treesitter/nvim-treesitter-context",
+    config = function()
+      require("treesitter-context").setup({
+        max_lines = 1,
+        trim_scope = "outer",
+      })
+    end
   },
   {
     "sindrets/diffview.nvim"
@@ -382,11 +391,35 @@ require("lazy").setup({
   {
     "nyoom-engineering/oxocarbon.nvim"
   },
-  { "blazkowolf/gruber-darker.nvim" }
+  { "blazkowolf/gruber-darker.nvim" },
+  { 'milanglacier/minuet-ai.nvim',
+  config = function()
+    require('minuet').setup {
+      provider = 'openai_fim_compatible',
+      provider_options = {
+        openai_fim_compatible = {
+          api_key = 'DEEPSEEK_API_KEY', -- reads the env var
+          name = 'deepseek',
+          end_point = 'https://api.deepseek.com/beta/completions',
+          model = 'deepseek-v4-flash',
+          optional = {
+            max_tokens = 256,
+            top_p = 0.9,
+          },
+        },
+      },
+      -- Manual only. Auto-complete fired a DeepSeek round-trip on every completion
+      -- trigger (i.e. every newline), which stalled insert mode. Invoke with <A-y>.
+      cmp = {
+        enable_auto_complete = false,
+      },
+    }
+  end,
+  }
 })
 
 require('nvim-treesitter').install({
-  'astro', 'tsx', 'typescript', 'html', 'css', 'vue', 'go', 'python', 'c_sharp', 'razor',
+  'javascript', 'jsdoc', 'tsx', 'typescript', 'html', 'css', 'vue', 'go', 'python', 'c_sharp', 'razor', 'nix', 'gitcommit', 'gitignore', 'dockerfile', 'bash', 'json'
 })
 
 vim.api.nvim_create_autocmd('FileType', {
@@ -462,7 +495,9 @@ vim.cmd [[colorscheme gruber-darker]]
 
 local builtin = require('telescope.builtin')
 vim.keymap.set('n', '<leader>f', builtin.find_files, { silent = true })
-vim.keymap.set('n', '<leader>g', builtin.live_grep, { silent = true })
+vim.keymap.set('n', '<leader>g', function()
+  builtin.live_grep({ additional_args = { '--no-ignore' } })
+end, { silent = true })
 vim.keymap.set('n', '<leader>l', "<Cmd>:lua vim.lsp.buf.format()<CR>", { silent = true })
 vim.keymap.set('n', '<leader>n', '<Cmd>:NvimTreeToggle<CR>', { silent = true })
 

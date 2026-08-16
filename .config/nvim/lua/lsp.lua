@@ -1,6 +1,69 @@
+-- Wrap `msg` to at most `max_lines` lines of `width` columns, ellipsizing if it
+-- still doesn't fit. Returns a list of lines.
+local function wrap_diagnostic(msg, width, max_lines)
+  msg = msg:gsub('%s+', ' '):gsub('^%s+', ''):gsub('%s+$', '')
+  if width < 20 then
+    return { msg }
+  end
+
+  local lines, line = {}, ''
+  for word in msg:gmatch('%S+') do
+    local candidate = (line == '') and word or (line .. ' ' .. word)
+    if vim.fn.strdisplaywidth(candidate) > width and line ~= '' then
+      table.insert(lines, line)
+      line = word
+      if #lines == max_lines then
+        break
+      end
+    else
+      line = candidate
+    end
+  end
+
+  if #lines < max_lines then
+    table.insert(lines, line)
+    return lines
+  end
+
+  -- Out of room: mark the last line as truncated.
+  local last = lines[max_lines]
+  while vim.fn.strdisplaywidth(last) > width - 1 do
+    last = last:sub(1, -2)
+  end
+  lines[max_lines] = last .. '…'
+  return lines
+end
+
+-- Space available for a diagnostic, minus the gutter and a little breathing room.
+local function diagnostic_width()
+  local win = vim.api.nvim_get_current_win()
+  local info = vim.fn.getwininfo(win)[1]
+  local textoff = info and info.textoff or 0
+  return math.max(20, vim.api.nvim_win_get_width(win) - textoff - 6)
+end
+
 vim.diagnostic.config({
-  virtual_text = true,
   signs = true,
+  -- virt_text extmarks are single-screen-line by construction, so virtual_text can
+  -- never wrap. Keep the compact one-liner everywhere *except* the cursor line, and
+  -- let virtual_lines render the full message where you're actually looking.
+  virtual_text = {
+    current_line = false,
+    format = function(d)
+      return wrap_diagnostic(d.message, diagnostic_width(), 1)[1]
+    end,
+  },
+  virtual_lines = {
+    current_line = true,
+    format = function(d)
+      return table.concat(wrap_diagnostic(d.message, diagnostic_width(), 2), '\n')
+    end,
+  },
+  float = {
+    border = 'rounded',
+    max_width = 90,
+    source = true,
+  },
 })
 
 -- Global LSP keymaps
@@ -280,6 +343,18 @@ vim.lsp.config('lua_ls', {
   },
 })
 
+-- Loud popups for silent LSP failures (project-load errors, server crashes).
+local lsp_alert = require('lsp_alert')
+lsp_alert.setup()
+
+-- nvim's built-in defaults already cover snippetSupport; capabilities here only adds
+-- cmp's extras on top: preselectSupport, plus insertTextFormat/insertTextMode in
+-- resolveSupport. Minor quality-of-life, not required for completion to work.
+vim.lsp.config('*', {
+  capabilities = require('cmp_nvim_lsp').default_capabilities(),
+  on_exit = lsp_alert.on_exit,
+})
+
 vim.lsp.config('clangd', {
   cmd = { 'clangd', '--background-index' },
   filetypes = { 'c', 'cpp', 'objc', 'objcpp' },
@@ -296,9 +371,10 @@ vim.lsp.config('clangd', {
 })
 
 vim.lsp.config("roslyn", {
-    on_attach = function()
-        print("This will run when the server attaches!")
-    end,
+    -- roslyn.nvim defaults to mason's `roslyn-language-server` bin, which is the
+    -- native apphost -- NixOS can't exec generic dynamically linked binaries.
+    -- Mason also ships a `roslyn` bin that is a `dotnet <dll>` wrapper; use that.
+    cmd = { vim.fs.joinpath(vim.fn.stdpath("data"), "mason", "bin", "roslyn"), "--stdio" },
     settings = {
         ["csharp|inlay_hints"] = {
             csharp_enable_inlay_hints_for_implicit_object_creation = true,
